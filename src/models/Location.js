@@ -1,5 +1,11 @@
 export default class Location {
 
+  _country: String;
+  _area: String;
+  _city: String;
+  _longitude: number;
+  _latitude: number;
+
   /**
    *
    * @param country
@@ -16,8 +22,6 @@ export default class Location {
     this._latitude = latitude;
   }
 
-  _country: String;
-
   /**
    *
    * @return {String}
@@ -25,8 +29,6 @@ export default class Location {
   get country(): String {
     return this._country;
   }
-
-  _area: String;
 
   /**
    *
@@ -36,8 +38,6 @@ export default class Location {
     return this._area;
   }
 
-  _city: String;
-
   /**
    *
    * @return {String}
@@ -46,8 +46,6 @@ export default class Location {
     return this._city;
   }
 
-  _longitude: number;
-
   /**
    *
    * @return {number}
@@ -55,8 +53,6 @@ export default class Location {
   get longitude(): number {
     return this._longitude;
   }
-
-  _latitude: number;
 
   /**
    *

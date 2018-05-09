@@ -8,7 +8,11 @@ import DynamicTitle from './title/DynamicTitle';
 
 export default class Trip {
 
+  _identifier: Identifier;
   _routes: RouteMap[] = [];
+  _chapters: Chapter[] = [];
+  _title: StaticTitle | null;
+
   /**
    *
    * @param chapter
@@ -21,6 +25,7 @@ export default class Trip {
       moment(chapter.endDate).format('MMMM')
     ];
   };
+
   /**
    *
    * @param chapter
@@ -38,8 +43,6 @@ export default class Trip {
     this._title = title;
   }
 
-  _identifier: Identifier;
-
   /**
    *
    * @return {Identifier}
@@ -48,8 +51,6 @@ export default class Trip {
     return this._identifier;
   }
 
-  _chapters: Chapter[] = [];
-
   /**
    *
    * @return {Chapter[]}
@@ -57,8 +58,6 @@ export default class Trip {
   get chapters(): Chapter[] {
     return this._chapters;
   }
-
-  _title: StaticTitle | null;
 
   /**
    *

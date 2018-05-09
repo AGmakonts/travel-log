@@ -1,8 +1,9 @@
 import Trip from '../../models/Trip';
+import {ADDED} from './actionTypes';
 
 function addTrip(trip: Trip) {
   return {
-    type: 'TRIP_ADDED',
+    type: ADDED,
     payload: trip
   }
 }

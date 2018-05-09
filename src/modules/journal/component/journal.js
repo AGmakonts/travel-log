@@ -1,5 +1,5 @@
 import React from 'react';
-import {Badge, Breadcrumb, Layout, Menu} from 'antd';
+import {Breadcrumb, Layout, Menu} from 'antd';
 import propTypes from 'prop-types';
 import {connect} from 'react-redux';
 import addTrip from '../../../actions/trip/add';
@@ -8,14 +8,14 @@ import Location from '../../../models/Location';
 import Chapter from '../../../models/Chapter';
 import Trip from '../../../models/Trip';
 import Identifier from '../../../models/Identifier';
+import TripList from './tripList';
+import selectTrip from '../../../actions/trip/select';
 
-const {SubMenu} = Menu;
 const {Header, Content, Sider} = Layout;
 
 class Journal extends React.Component {
 
-  itemClickHandler = (event) => {
-    const {key} = event;
+  itemClickHandler = () => {
 
     const countries = ['Israel', 'Poland', 'Jordan', 'USA', 'Germany', 'Russia', 'France', 'Malta', 'Mexico'];
 
@@ -44,49 +44,9 @@ class Journal extends React.Component {
     this.props.addTrip(trip);
   };
 
-  /**
-   *
-   * @return {Array}
-   */
-  renderList = () => {
-
-    const menuElements = [];
-    const list = this.convertTripListToHierarchy();
-
-    for (const year in list) {
-
-      if (!list.hasOwnProperty(year)) {
-        continue;
-      }
-
-      const items = list[year].map((trip: Trip) => {
-        return <Menu.Item key={trip.identifier.uuid}>{trip.title.value} <Badge
-          style={{backgroundColor: '#fff', color: '#999'}} count={trip.chapterCount}/></Menu.Item>
-      });
-
-      menuElements.push(<SubMenu key={year} title={year}>{items}</SubMenu>);
-    }
-
-    return menuElements;
-
+  tripSelectionHandler = (identifier) => {
+    this.props.selectTrip(identifier);
   };
-
-  /**
-   *
-   */
-  convertTripListToHierarchy() {
-    const list = {};
-
-    this.props.tripList.forEach((tripListItem: Trip) => {
-      const year = tripListItem.date.getFullYear();
-      if (!list.hasOwnProperty(year)) {
-        list[year] = [];
-      }
-
-      list[year].push(tripListItem);
-    });
-    return list;
-  }
 
   /**
    *
@@ -111,15 +71,8 @@ class Journal extends React.Component {
         </Header>
         <Layout>
           <Sider width={400} style={{background: '#fff'}}>
-            <Menu
-              mode="inline"
-              defaultSelectedKeys={['1']}
-              defaultOpenKeys={['sub1']}
-              style={{height: '100%', borderRight: 0}}
-            >
-              {this.renderList()}
-
-            </Menu>
+            <TripList style={{height: '100%', borderRight: 0}} tripList={this.props.tripList}
+                      onSelect={this.tripSelectionHandler}/>
           </Sider>
           <Layout style={{padding: '0 24px 24px'}}>
             <Breadcrumb style={{margin: '16px 0'}}>
@@ -138,17 +91,25 @@ class Journal extends React.Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({addTrip: addTrip}, dispatch);
+  const actionCreators = {
+    addTrip,
+    selectTrip
+  };
+  return bindActionCreators(actionCreators, dispatch);
 }
 
 function mapStateToProps(state) {
   return {
-    tripList: state.trips.tripList
+    tripList: state.trips.tripList,
+    selectedTrip: state.trips.selected
   }
 }
 
 Journal.propTypes = {
-  tripList: propTypes.array
+  tripList: propTypes.array.isRequired,
+  selectedTrip: propTypes.string,
+  selectTrip: propTypes.func.isRequired,
+  addTrip: propTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Journal);
