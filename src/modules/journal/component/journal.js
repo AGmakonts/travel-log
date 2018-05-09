@@ -1,15 +1,15 @@
-import React from 'react';
 import {Breadcrumb, Layout, Menu} from 'antd';
 import propTypes from 'prop-types';
+import React from 'react';
 import {connect} from 'react-redux';
-import addTrip from '../../../actions/trip/add';
 import {bindActionCreators} from 'redux';
-import Location from '../../../models/Location';
-import Chapter from '../../../models/Chapter';
-import Trip from '../../../models/Trip';
-import Identifier from '../../../models/Identifier';
-import TripList from './tripList';
+import addTrip from '../../../actions/trip/add';
 import selectTrip from '../../../actions/trip/select';
+import Chapter from '../../../models/Chapter';
+import Identifier from '../../../models/Identifier';
+import Location from '../../../models/Location';
+import Trip from '../../../models/Trip';
+import TripList from './tripList';
 
 const {Header, Content, Sider} = Layout;
 
