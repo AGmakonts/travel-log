@@ -48,11 +48,18 @@ class Journal extends React.Component {
     this.props.selectTrip(identifier);
   };
 
+  tripCreationIntentHandler = () => {
+    console.log('dd');
+  };
+
   /**
    *
    * @return {*}
    */
   render() {
+
+    const tripList = <TripList style={{height: '100%', borderRight: 0}} tripList={this.props.tripList} onSelect={this.tripSelectionHandler} onCreation={this.tripCreationIntentHandler}/>;
+
     return (
       <Layout>
         <Header className="header">
@@ -71,8 +78,7 @@ class Journal extends React.Component {
         </Header>
         <Layout>
           <Sider width={400} style={{background: '#fff'}}>
-            <TripList style={{height: '100%', borderRight: 0}} tripList={this.props.tripList}
-                      onSelect={this.tripSelectionHandler}/>
+            {tripList}
           </Sider>
           <Layout style={{padding: '0 24px 24px'}}>
             <Breadcrumb style={{margin: '16px 0'}}>
