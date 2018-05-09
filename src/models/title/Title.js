@@ -10,4 +10,8 @@ export default class Title {
   get value(): String {
     return this._title;
   }
+
+  get slug() : String {
+    return this.value.replace(/\s|,\s/g,'-');
+  }
 }

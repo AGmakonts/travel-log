@@ -1,5 +1,5 @@
-import Title from './Title';
 import TimeOfYear from '../TimeOfYear';
+import Title from './Title';
 
 export default class DynamicTitle extends Title {
 
@@ -31,7 +31,7 @@ export default class DynamicTitle extends Title {
 
     const maximumCountries: number = 4;
     const lastCountry: String = uniqueCountries.length > maximumCountries ? 'others' : uniqueCountries.pop();
-    const suffix: String = (lastCountry ? ` and ${lastCountry}` : '');
+    const suffix: String = (lastCountry ? `and ${lastCountry}` : '');
     const listedCountries: String = uniqueCountries.slice(0, maximumCountries).join(', ');
     const timeOfYear: TimeOfYear = new TimeOfYear(this._months);
 

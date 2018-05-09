@@ -1,7 +1,8 @@
-import {Breadcrumb, Layout, Menu} from 'antd';
+import {Layout, Menu} from 'antd';
 import propTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
+import {Route, withRouter} from 'react-router';
 import {bindActionCreators} from 'redux';
 import addTrip from '../../../actions/trip/add';
 import selectTrip from '../../../actions/trip/select';
@@ -9,6 +10,8 @@ import Chapter from '../../../models/Chapter';
 import Identifier from '../../../models/Identifier';
 import Location from '../../../models/Location';
 import Trip from '../../../models/Trip';
+import Creator from './creation/creator';
+import TripDetails from './tripDetails';
 import TripList from './tripList';
 
 const {Header, Content, Sider} = Layout;
@@ -44,13 +47,6 @@ class Journal extends React.Component {
     this.props.addTrip(trip);
   };
 
-  tripSelectionHandler = (identifier) => {
-    this.props.selectTrip(identifier);
-  };
-
-  tripCreationIntentHandler = () => {
-    console.log('dd');
-  };
 
   /**
    *
@@ -58,7 +54,7 @@ class Journal extends React.Component {
    */
   render() {
 
-    const tripList = <TripList style={{height: '100%', borderRight: 0}} tripList={this.props.tripList} onSelect={this.tripSelectionHandler} onCreation={this.tripCreationIntentHandler}/>;
+    const tripList = <TripList style={{height: '100%', borderRight: 0}} tripList={this.props.tripList}/>;
 
     return (
       <Layout>
@@ -81,13 +77,9 @@ class Journal extends React.Component {
             {tripList}
           </Sider>
           <Layout style={{padding: '0 24px 24px'}}>
-            <Breadcrumb style={{margin: '16px 0'}}>
-              <Breadcrumb.Item>Home</Breadcrumb.Item>
-              <Breadcrumb.Item>List</Breadcrumb.Item>
-              <Breadcrumb.Item>App</Breadcrumb.Item>
-            </Breadcrumb>
             <Content style={{background: '#fff', padding: 24, margin: 0, minHeight: 280}}>
-              Content
+              <Route path='/newTrip' render={() => <Creator/>}/>
+              <Route path='/trip/:id/:name' render={() => <TripDetails/>}/>
             </Content>
           </Layout>
         </Layout>
@@ -107,15 +99,12 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
   return {
     tripList: state.trips.tripList,
-    selectedTrip: state.trips.selected
   }
 }
 
 Journal.propTypes = {
   tripList: propTypes.array.isRequired,
-  selectedTrip: propTypes.string,
-  selectTrip: propTypes.func.isRequired,
   addTrip: propTypes.func.isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Journal);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Journal));

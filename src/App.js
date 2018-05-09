@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import Journal from './modules/journal/component/journal';
-
 import 'antd/dist/antd.css';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import './App.css';
+import Journal from './modules/journal/component/journal';
 
 class App extends Component {
 
@@ -13,4 +13,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect()(App);

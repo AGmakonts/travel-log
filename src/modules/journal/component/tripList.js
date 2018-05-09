@@ -1,6 +1,8 @@
 import {Badge, Menu} from 'antd';
 import propTypes from 'prop-types';
 import React from 'react';
+import {Link} from 'react-router-dom';
+import Title from '../../../models/title/Title';
 import Trip from '../../../models/Trip';
 
 export default class TripList extends React.Component {
@@ -14,12 +16,6 @@ export default class TripList extends React.Component {
   renderList = () => {
 
     const menuElements = [];
-
-    if (this.props.onCreation) {
-      menuElements.push(<Menu.Item key={TripList.CREATION_INTENT_KEY}>Add new trip</Menu.Item>)
-      menuElements.push(<Menu.Divider key='divider'/>);
-    }
-
     const list = this.convertTripListToHierarchy();
 
     for (const year in list) {
@@ -52,9 +48,15 @@ export default class TripList extends React.Component {
    * @private
    */
   _constructSingleItem(trip) {
+
+    const identifier: String = trip.identifier.uuid;
+    const title: Title = trip.title;
+
     return (
-      <Menu.Item key={trip.identifier.uuid}>
-        {trip.title.value} <Badge style={{backgroundColor: '#fff', color: '#999'}} count={trip.chapterCount}/>
+      <Menu.Item key={identifier}>
+        <Link to={`/trip/${identifier}/${title.slug}`}>
+          {title.value} <Badge style={{backgroundColor: '#fff', color: '#999'}} count={trip.chapterCount}/>
+        </Link>
       </Menu.Item>);
   }
 
@@ -75,29 +77,16 @@ export default class TripList extends React.Component {
     return list;
   }
 
-  /**
-   *
-   * @param event
-   */
-  menuClickHandler = (event) => {
-    const {key} = event;
-
-
-    if (key === TripList.CREATION_INTENT_KEY && this.props.onCreation) {
-      this.props.onCreation();
-    } else if (key !== undefined) {
-      this.props.onSelect(key);
-    }
-
-  };
 
   render() {
     return (
       <Menu
         mode="inline"
         style={this.props.style}
-        onClick={this.menuClickHandler}
       >
+        <Menu.Item key={TripList.CREATION_INTENT_KEY}><Link to='/newTrip'>Add new trip</Link></Menu.Item>
+        <Menu.Divider key='divider'/>
+
         {this.renderList()}
 
       </Menu>
@@ -107,7 +96,5 @@ export default class TripList extends React.Component {
 
 TripList.propTypes = {
   tripList: propTypes.arrayOf(propTypes.instanceOf(Trip)).isRequired,
-  style: propTypes.object.isRequired,
-  onSelect: propTypes.func.isRequired,
-  onCreation: propTypes.func
+  style: propTypes.object.isRequired
 };
