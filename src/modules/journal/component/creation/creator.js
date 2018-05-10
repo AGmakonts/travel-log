@@ -1,3 +1,4 @@
+import {Divider, Icon} from 'antd';
 import propTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
@@ -19,7 +20,9 @@ class Creator extends React.Component {
     return (
       <div>
         <h2>Create new trip!</h2>
+        <Divider dashed><Icon type="plus-circle-o" /> Add travel info</Divider>
         <Chapter coordinates={this.props.chapterLocations[0]} onLocationChange={this.handleMapClick}/>
+        <Divider dashed><Icon type="plus-circle-o" /> Add chapter</Divider>
       </div>
     );
   }

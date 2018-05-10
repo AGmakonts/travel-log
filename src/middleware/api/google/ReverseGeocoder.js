@@ -30,14 +30,15 @@ export default class ReverseGeocoder extends Service {
     const {lat, lng} = action.payload;
     const request = {
       'latlng': {lat, lng},
-      'result_type': 'country|locality'
+      'result_type': 'country|locality|administrative_area_level_1|administrative_area_level_2|administrative_area_level_3|administrative_area_level_4'
     };
 
     this._client.reverseGeocode(request, (result, status) => {
       const results = status.json.results[0].address_components;
       const locationData = {
         country: null,
-        city: null
+        city: null,
+        formatted: status.json.results[0].formatted_address
       };
 
       results

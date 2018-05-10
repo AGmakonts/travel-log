@@ -31,10 +31,10 @@ export default class Chapter extends React.Component {
       <Card
         cover={map}
         actions={[<Icon key={1} type="save"/>]}
-        title='Create new chapter!'
+        title='Add chapter!'
       >
         <Meta
-          title="Card title"
+          title={this.props.coordinates.formatted || 'Pick location of this chapter'}
           description="This is the description"
         />
       </Card>

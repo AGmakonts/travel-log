@@ -20,9 +20,10 @@ export default function chapterLocations(state = [], action) {
       const originLng = action.origin.payload.lng;
       const country = payload.data.country;
       const city = payload.data.city;
+      const formatted = payload.data.formatted;
       const enhancedState = [...state];
 
-      enhancedState.splice(index, 1, {lat: originLat, lng: originLng, country, city});
+      enhancedState.splice(index, 1, {lat: originLat, lng: originLng, country, city, formatted});
       return enhancedState;
     }
 
