@@ -1,0 +1,9 @@
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    line-height: 40px;
+}
+
+.toolbar > div > button:last-child {
+    margin-left: 20px;
+}

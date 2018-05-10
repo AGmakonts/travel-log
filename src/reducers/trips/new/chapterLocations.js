@@ -27,9 +27,8 @@ export default function chapterLocations(state = [], action) {
       return enhancedState;
     }
 
-    case TRIP_CREATION_CANCELED: {
+    case TRIP_CREATION_CANCELED:
       return [];
-    }
 
     default:
       return state;

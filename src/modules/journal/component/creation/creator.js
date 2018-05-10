@@ -1,12 +1,13 @@
-import {Divider, Icon} from 'antd';
+import {Button, Divider, Icon} from 'antd';
 import propTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import cancel from '../../../../actions/trip/create/cancel';
 import changeChapterLocation from '../../../../actions/trip/create/changeChapterLocation';
+import save from '../../../../actions/trip/create/save';
 import Chapter from './chapter';
-
+import styles from './creator.css';
 
 class Creator extends React.Component {
 
@@ -23,10 +24,16 @@ class Creator extends React.Component {
 
     return (
       <div>
-        <h2>Create new trip!</h2>
-        <Divider dashed><Icon type="plus-circle-o" /> Add travel info</Divider>
-        <Chapter coordinates={this.props.chapterLocations[0]} onLocationChange={this.handleMapClick}/>
-        <Divider dashed><Icon type="plus-circle-o" /> Add chapter</Divider>
+        <h2 className={styles.toolbar}>
+          Create new trip!
+          <div>
+            <Button type="danger" shape="circle" icon="delete" size='large'/>
+            <Button type="primary" shape="circle" icon="save" size='large' onClick={() => this.props.save(this.props.newTrip)}/>
+          </div>
+        </h2>
+        <Divider dashed><Icon type="plus-circle-o"/> Add travel info</Divider>
+        <Chapter coordinates={this.props.newTrip.chapterLocations[0]} onLocationChange={this.handleMapClick}/>
+        <Divider dashed><Icon type="plus-circle-o"/> Add chapter</Divider>
       </div>
     );
   }
@@ -35,21 +42,23 @@ class Creator extends React.Component {
 function mapDispatchToProps(dispatch) {
   const actionCreators = {
     changeChapterLocation,
-    cancel
+    cancel,
+    save
   };
   return bindActionCreators(actionCreators, dispatch);
 }
 
 function mapStateToProps(state) {
   return {
-    chapterLocations: state.trips.newTrip.chapterLocations,
+    newTrip: state.trips.newTrip
   }
 }
 
 Creator.propTypes = {
   changeChapterLocation: propTypes.func,
-  chapterLocations: propTypes.array,
-  cancel: propTypes.func.isRequired
+  newTrip: propTypes.object,
+  cancel: propTypes.func.isRequired,
+  save: propTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Creator);
