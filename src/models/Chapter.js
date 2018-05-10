@@ -5,11 +5,13 @@ export default class Chapter {
   _startDate: Date;
   _endDate: Date;
   _location: Location;
+  _summary: String;
 
-  constructor(startDate: Date, endDate: Date, location: Location) {
+  constructor(startDate: Date, endDate: Date, location: Location, summary: String) {
     this._startDate = startDate;
     this._endDate = endDate;
     this._location = location;
+    this._summary = summary;
   }
 
   get startDate(): Date {

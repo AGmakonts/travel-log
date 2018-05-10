@@ -1,4 +1,4 @@
-import {CHAPTER_LOCATION_CHANGED} from '../../../actions/trip/create/actionTypes';
+import {CHAPTER_LOCATION_CHANGED, TRIP_CREATION_CANCELED} from '../../../actions/trip/create/actionTypes';
 import {apiAction} from '../../../middleware/api/apiMiddleware';
 
 export default function chapterLocations(state = [], action) {
@@ -25,6 +25,10 @@ export default function chapterLocations(state = [], action) {
 
       enhancedState.splice(index, 1, {lat: originLat, lng: originLng, country, city, formatted});
       return enhancedState;
+    }
+
+    case TRIP_CREATION_CANCELED: {
+      return [];
     }
 
     default:

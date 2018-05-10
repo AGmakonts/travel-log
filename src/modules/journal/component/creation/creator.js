@@ -3,6 +3,7 @@ import propTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import cancel from '../../../../actions/trip/create/cancel';
 import changeChapterLocation from '../../../../actions/trip/create/changeChapterLocation';
 import Chapter from './chapter';
 
@@ -14,6 +15,9 @@ class Creator extends React.Component {
     this.props.changeChapterLocation(lat, lng, 0);
   };
 
+  componentWillUnmount() {
+    this.props.cancel()
+  }
 
   render() {
 
@@ -30,7 +34,8 @@ class Creator extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   const actionCreators = {
-    changeChapterLocation
+    changeChapterLocation,
+    cancel
   };
   return bindActionCreators(actionCreators, dispatch);
 }
@@ -43,7 +48,8 @@ function mapStateToProps(state) {
 
 Creator.propTypes = {
   changeChapterLocation: propTypes.func,
-  chapterLocations: propTypes.array
+  chapterLocations: propTypes.array,
+  cancel: propTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Creator);

@@ -1,10 +1,11 @@
-import {Card, Icon} from 'antd';
+import {Card, Icon, Input} from 'antd';
 import GoogleMapReact from 'google-map-react';
 import propTypes from 'prop-types';
 import React from 'react';
 import styles from './map.css';
 
 const {Meta} = Card;
+const {TextArea} = Input;
 
 
 export default class Chapter extends React.Component {
@@ -35,7 +36,9 @@ export default class Chapter extends React.Component {
       >
         <Meta
           title={this.props.coordinates.formatted || 'Pick location of this chapter'}
-          description="This is the description"
+          description={
+            <TextArea placeholder="Chapter summary" autosize={{minRows: 2}}/>
+          }
         />
       </Card>
     );
@@ -44,7 +47,7 @@ export default class Chapter extends React.Component {
 }
 
 Chapter.defaultProps = {
-  coordinates : {
+  coordinates: {
     lat: null,
     lng: null
   }

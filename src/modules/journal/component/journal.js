@@ -104,7 +104,8 @@ function mapStateToProps(state) {
 
 Journal.propTypes = {
   tripList: propTypes.array.isRequired,
-  addTrip: propTypes.func.isRequired
+  addTrip: propTypes.func.isRequired,
+  cancel: propTypes.func.isRequired
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Journal));
