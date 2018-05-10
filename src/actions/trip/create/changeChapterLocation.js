@@ -1,11 +1,11 @@
 import {CHAPTER_LOCATION_CHANGED} from './actionTypes';
 
-function changeChapterLocation(lat: number, lgn: number, index: number) {
+function changeChapterLocation(lat: number, lng: number, index: number) {
   return {
     type: CHAPTER_LOCATION_CHANGED,
     payload: {
       lat,
-      lgn,
+      lng,
       index
     }
   }
