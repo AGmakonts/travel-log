@@ -18,13 +18,24 @@ export default class TripList extends React.Component {
     const menuElements = [];
     const list = this.convertTripListToHierarchy();
 
-    for (const year in list) {
-      if (!list.hasOwnProperty(year)) {
-        continue;
-      }
-      const items = this._constructItems(list, year);
-      menuElements.push(<Menu.ItemGroup key={year} title={year}>{items}</Menu.ItemGroup>);
-    }
+    Object.keys(list)
+      .sort((a, b) => {
+        return parseInt(b) - parseInt(a)
+      })
+      .forEach((year: number) => {
+        if (list.hasOwnProperty(year)) {
+          const items = this._constructItems(list, year);
+          menuElements.push(<Menu.ItemGroup key={year} title={year}>{items}</Menu.ItemGroup>);
+        }
+      });
+
+    // for (const year in list) {
+    //   if (!list.hasOwnProperty(year)) {
+    //     continue;
+    //   }
+    //   const items = this._constructItems(list, year);
+    //   menuElements.push(<Menu.ItemGroup key={year} title={year}>{items}</Menu.ItemGroup>);
+    // }
 
     return menuElements;
 
@@ -66,14 +77,18 @@ export default class TripList extends React.Component {
   convertTripListToHierarchy() {
     const list = {};
 
-    this.props.tripList.forEach((tripListItem: Trip) => {
-      const year = tripListItem.date.getFullYear();
-      if (!list.hasOwnProperty(year)) {
-        list[year] = [];
-      }
+    this.props.tripList
+      .sort((a: Trip, b: Trip) => {
+        return b.date - a.date;
+      })
+      .forEach((tripListItem: Trip) => {
+        const year = tripListItem.date.getFullYear();
+        if (!list.hasOwnProperty(year)) {
+          list[year] = [];
+        }
 
-      list[year].push(tripListItem);
-    });
+        list[year].push(tripListItem);
+      });
     return list;
   }
 

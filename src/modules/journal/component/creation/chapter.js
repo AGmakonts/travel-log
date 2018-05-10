@@ -48,7 +48,6 @@ export default class Chapter extends React.Component {
               <Divider/>
               <TextArea placeholder="Chapter summary" autosize={{minRows: 2}}/>
             </Fragment>
-
           }
         />
       </Card>
