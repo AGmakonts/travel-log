@@ -1,4 +1,4 @@
-import {Button, Divider, Icon} from 'antd';
+import {Button, Divider, Icon, Timeline} from 'antd';
 import propTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
@@ -36,9 +36,19 @@ class Creator extends React.Component {
             <Button type="primary" shape="circle" icon="save" size='large' onClick={() => this.props.save(this.props.newTrip)}/>
           </div>
         </h2>
-        <Divider dashed><Icon type="plus-circle-o"/> Add travel info</Divider>
-        <Chapter coordinates={this.props.newTrip.chapterLocations[0]} onLocationChange={this.handleMapClick} onDateChange={this.handleDateChange}/>
-        <Divider dashed><Icon type="plus-circle-o"/> Add chapter</Divider>
+
+        <Timeline>
+          <Timeline.Item>
+            <Divider dashed><Icon type="plus-circle-o"/> Add travel info</Divider>
+          </Timeline.Item>
+          <Timeline.Item>
+            <Chapter coordinates={this.props.newTrip.chapterLocations[0]} onLocationChange={this.handleMapClick} onDateChange={this.handleDateChange}/>
+
+          </Timeline.Item>
+          <Timeline.Item dot={<Icon type="arrow-down" style={{ fontSize: '16px' }}/>} color="black">
+            <Divider dashed><Icon type="plus-circle-o"/> Add chapter</Divider>
+          </Timeline.Item>
+        </Timeline>
       </div>
     );
   }

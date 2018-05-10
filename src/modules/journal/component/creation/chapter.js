@@ -1,4 +1,4 @@
-import {Card, DatePicker, Divider, Icon, Input} from 'antd';
+import {Card, DatePicker, Divider, Icon, Input, Tabs} from 'antd';
 import GoogleMapReact from 'google-map-react';
 import moment from 'moment';
 import propTypes from 'prop-types';
@@ -8,6 +8,7 @@ import styles from './map.css';
 const {Meta} = Card;
 const {TextArea} = Input;
 const {RangePicker} = DatePicker;
+const TabPane = Tabs.TabPane;
 
 
 export default class Chapter extends React.Component {
@@ -34,11 +35,30 @@ export default class Chapter extends React.Component {
       </GoogleMapReact>
     </div>;
 
+    const tabList = [{
+      key: 'tab1',
+      tab: 'Basic info',
+    }, {
+      key: 'tab2',
+      tab: 'Chapter editor',
+    }];
+
+    const contentList = {
+      tab1: <Fragment>
+        <RangePicker size='large' defaultValue={[moment(), moment()]} onChange={this.props.onDateChange}/>
+        <Divider/>
+        <TextArea placeholder="Chapter summary" autosize={{minRows: 2}}/>
+      </Fragment>,
+      tab2: <p>content2</p>,
+    };
+
     return (
+
       <Card
         cover={map}
         actions={[<Icon key={1} type="save"/>]}
         title='Add chapter!'
+        tabList={tabList}
       >
         <Meta
           title={coordinates.formatted || 'Pick location of this chapter'}
