@@ -24,16 +24,16 @@ export default class DynamicTitle extends Title {
   get value(): String {
 
     const uniqueCountries = [... new Set(this._countries)];
+    const timeOfYear: TimeOfYear = new TimeOfYear(this._months);
 
     if (uniqueCountries.length === 1) {
-      return uniqueCountries[0];
-    }
+      return `${timeOfYear.value} in ${uniqueCountries[0]}`;
 
+    }
     const maximumCountries: number = 4;
     const lastCountry: String = uniqueCountries.length > maximumCountries ? 'others' : uniqueCountries.pop();
     const suffix: String = (lastCountry ? `and ${lastCountry}` : '');
     const listedCountries: String = uniqueCountries.slice(0, maximumCountries).join(', ');
-    const timeOfYear: TimeOfYear = new TimeOfYear(this._months);
 
     return `${timeOfYear.value} in ${listedCountries} ${suffix}`;
   }

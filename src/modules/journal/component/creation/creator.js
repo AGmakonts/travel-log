@@ -4,6 +4,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import cancel from '../../../../actions/trip/create/cancel';
+import changeChapterDates from '../../../../actions/trip/create/changeChapterDates';
 import changeChapterLocation from '../../../../actions/trip/create/changeChapterLocation';
 import save from '../../../../actions/trip/create/save';
 import Chapter from './chapter';
@@ -14,6 +15,10 @@ class Creator extends React.Component {
   handleMapClick = (event) => {
     const {lat, lng} = event;
     this.props.changeChapterLocation(lat, lng, 0);
+  };
+
+  handleDateChange = (dates) => {
+    this.props.changeChapterDates(dates[0].toDate(), dates[1].toDate());
   };
 
   componentWillUnmount() {
@@ -32,7 +37,7 @@ class Creator extends React.Component {
           </div>
         </h2>
         <Divider dashed><Icon type="plus-circle-o"/> Add travel info</Divider>
-        <Chapter coordinates={this.props.newTrip.chapterLocations[0]} onLocationChange={this.handleMapClick}/>
+        <Chapter coordinates={this.props.newTrip.chapterLocations[0]} onLocationChange={this.handleMapClick} onDateChange={this.handleDateChange}/>
         <Divider dashed><Icon type="plus-circle-o"/> Add chapter</Divider>
       </div>
     );
@@ -42,6 +47,7 @@ class Creator extends React.Component {
 function mapDispatchToProps(dispatch) {
   const actionCreators = {
     changeChapterLocation,
+    changeChapterDates,
     cancel,
     save
   };
@@ -56,6 +62,7 @@ function mapStateToProps(state) {
 
 Creator.propTypes = {
   changeChapterLocation: propTypes.func,
+  changeChapterDates: propTypes.func,
   newTrip: propTypes.object,
   cancel: propTypes.func.isRequired,
   save: propTypes.func.isRequired

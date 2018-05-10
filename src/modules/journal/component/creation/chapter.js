@@ -1,19 +1,25 @@
-import {Card, Icon, Input} from 'antd';
+import {Card, DatePicker, Divider, Icon, Input} from 'antd';
 import GoogleMapReact from 'google-map-react';
+import moment from 'moment';
 import propTypes from 'prop-types';
-import React from 'react';
+import React, {Fragment} from 'react';
 import styles from './map.css';
 
 const {Meta} = Card;
 const {TextArea} = Input;
+const {RangePicker} = DatePicker;
 
 
 export default class Chapter extends React.Component {
 
+  componentDidMount() {
+    this.props.onDateChange([this.props.dates.start, this.props.dates.end])
+  }
+
   render() {
 
-
-    const marker = <Icon className={styles.marker} type="environment" lat={this.props.coordinates.lat} lng={this.props.coordinates.lng} style={{fontSize: 30}}/>;
+    const coordinates = this.props.coordinates;
+    const marker = <Icon className={styles.marker} type="environment" lat={coordinates.lat} lng={coordinates.lng} style={{fontSize: 30}}/>;
     const map = <div className={styles.mapContainer}>
       <GoogleMapReact
         bootstrapURLKeys={{key: 'AIzaSyCekIreelGUg_VydHTlm6mJnv6YV6Y70I8'}}
@@ -24,7 +30,7 @@ export default class Chapter extends React.Component {
         defaultZoom={0}
         onClick={this.props.onLocationChange}
       >
-        {this.props.coordinates.lat && this.props.coordinates.lng && marker}
+        {coordinates.lat && coordinates.lng && marker}
       </GoogleMapReact>
     </div>;
 
@@ -35,9 +41,14 @@ export default class Chapter extends React.Component {
         title='Add chapter!'
       >
         <Meta
-          title={this.props.coordinates.formatted || 'Pick location of this chapter'}
+          title={coordinates.formatted || 'Pick location of this chapter'}
           description={
-            <TextArea placeholder="Chapter summary" autosize={{minRows: 2}}/>
+            <Fragment>
+              <RangePicker size='large' defaultValue={[moment(), moment()]} onChange={this.props.onDateChange}/>
+              <Divider/>
+              <TextArea placeholder="Chapter summary" autosize={{minRows: 2}}/>
+            </Fragment>
+
           }
         />
       </Card>
@@ -50,10 +61,16 @@ Chapter.defaultProps = {
   coordinates: {
     lat: null,
     lng: null
+  },
+  dates: {
+    start: moment(),
+    end: moment()
   }
 };
 
 Chapter.propTypes = {
   coordinates: propTypes.object,
-  onLocationChange: propTypes.func.isRequired
+  dates: propTypes.object,
+  onLocationChange: propTypes.func.isRequired,
+  onDateChange: propTypes.func.isRequired
 };
