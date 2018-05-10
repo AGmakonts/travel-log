@@ -3,3 +3,8 @@
     top: -30px;
     left: -15px;
 }
+
+.mapContainer {
+    height: 300px;
+    width: 100%
+}

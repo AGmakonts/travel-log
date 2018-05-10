@@ -19,7 +19,7 @@ class Creator extends React.Component {
     return (
       <div>
         <h2>Create new trip!</h2>
-        <Chapter coords={this.props.chapterLocations[0]} onLocationChange={this.handleMapClick}/>
+        <Chapter coordinates={this.props.chapterLocations[0]} onLocationChange={this.handleMapClick}/>
       </div>
     );
   }

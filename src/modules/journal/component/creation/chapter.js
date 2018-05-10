@@ -9,14 +9,11 @@ const {Meta} = Card;
 
 export default class Chapter extends React.Component {
 
-
-
   render() {
 
 
-    const marker = <Icon classNames={styles.marker} type="environment" lat={this.props.coords.lat} lng={this.props.coords.lng} style={{fontSize: 30}}/>;
-    const map = <div
-      style={{height: '300px', width: '100%'}}>
+    const marker = <Icon className={styles.marker} type="environment" lat={this.props.coordinates.lat} lng={this.props.coordinates.lng} style={{fontSize: 30}}/>;
+    const map = <div className={styles.mapContainer}>
       <GoogleMapReact
         bootstrapURLKeys={{key: 'AIzaSyCekIreelGUg_VydHTlm6mJnv6YV6Y70I8'}}
         defaultCenter={{
@@ -26,7 +23,7 @@ export default class Chapter extends React.Component {
         defaultZoom={0}
         onClick={this.props.onLocationChange}
       >
-        {this.props.coords.lat && this.props.coords.lng && marker}
+        {this.props.coordinates.lat && this.props.coordinates.lng && marker}
       </GoogleMapReact>
     </div>;
 
@@ -47,13 +44,13 @@ export default class Chapter extends React.Component {
 }
 
 Chapter.defaultProps = {
-  coords : {
+  coordinates : {
     lat: null,
     lng: null
   }
 };
 
 Chapter.propTypes = {
-  coords: propTypes.object,
+  coordinates: propTypes.object,
   onLocationChange: propTypes.func.isRequired
 };
