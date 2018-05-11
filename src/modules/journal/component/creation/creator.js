@@ -41,40 +41,51 @@ class Creator extends React.Component {
   }
 
   renderChapters() {
-
-    const timelineElements = [];
     const chapterLocations = this.props.newTrip.chapterLocations;
-    chapterLocations.forEach((location, index) => {
-      timelineElements.push(
-        <Timeline.Item key={`chapter-${index}`} dot={<Icon type="environment" style={{fontSize: '16px'}}/>}>
-          <Chapter
-            index={index}
-            restrictedDates={this.props.newTrip.chapterDates[index - 1] ? this.props.newTrip.chapterDates[index - 1].end : null}
-            coordinates={this.props.newTrip.chapterLocations[index]}
-            currentTab={this.props.newTrip.chapterTabs[index]}
-            summary={this.props.newTrip.chapterSummaries[index]}
-            onLocationChange={this.handleMapClick}
-            onDateChange={this.handleDateChange}
-            onTabChange={this.handleTabChange}
-            onSummaryUpdate={this.handleSummaryUpdate}
-          />
-
-        </Timeline.Item>
-      );
-
-      timelineElements.push(
-        <Timeline.Item key={`space-${index}`} dot={<Icon type="arrow-down" style={{fontSize: '16px'}}/>} color="black">
-          <div onClick={() => this.props.start(index + 1)}>
-            <Divider dashed><Icon type="plus-circle-o"/> Add chapter</Divider>
-          </div>
-        </Timeline.Item>
-      );
-
-    });
-
-    return timelineElements;
+    return chapterLocations.map((location, index) => {
+      return this._renderChapterDividerPair(index);
+    }).flatMap(element => element);
   }
 
+  /**
+   *
+   * @param index
+   * @return {*[]}
+   * @private
+   */
+  _renderChapterDividerPair = (index) => {
+    const chapter = (
+      <Timeline.Item key={`chapter-${index}`} dot={<Icon type="environment" style={{fontSize: '16px'}}/>}>
+        <Chapter
+          index={index}
+          restrictedDates={this.props.newTrip.chapterDates[index - 1] ? this.props.newTrip.chapterDates[index - 1].end : null}
+          coordinates={this.props.newTrip.chapterLocations[index]}
+          currentTab={this.props.newTrip.chapterTabs[index]}
+          summary={this.props.newTrip.chapterSummaries[index]}
+          onLocationChange={this.handleMapClick}
+          onDateChange={this.handleDateChange}
+          onTabChange={this.handleTabChange}
+          onSummaryUpdate={this.handleSummaryUpdate}
+        />
+
+      </Timeline.Item>
+    );
+
+    const divider = (
+      <Timeline.Item key={`space-${index}`} dot={<Icon type="arrow-down" style={{fontSize: '16px'}}/>} color="black">
+        <div onClick={() => this.props.start(index + 1)}>
+          <Divider dashed><Icon type="plus-circle-o"/> Add chapter</Divider>
+        </div>
+      </Timeline.Item>
+    );
+
+    return [chapter, divider]
+  };
+
+  /**
+   *
+   * @return {*}
+   */
   render() {
 
     return (
