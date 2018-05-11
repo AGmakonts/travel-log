@@ -18,7 +18,7 @@ export default function chapterDates(state = [], action) {
 
     case CHAPTER_CREATION_STARTED: {
       const newState = [];
-      newState[payload] = [];
+      newState[payload] = null;
       return newState;
     }
 

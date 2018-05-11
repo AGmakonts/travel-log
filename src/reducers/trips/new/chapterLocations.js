@@ -19,7 +19,7 @@ export default function chapterLocations(state = [], action) {
 
     case CHAPTER_CREATION_STARTED: {
       const newState = [];
-      newState[payload] = [];
+      newState[payload] = {};
       return newState;
     }
 

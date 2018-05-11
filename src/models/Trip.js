@@ -1,10 +1,10 @@
-import Identifier from './Identifier';
-import Chapter from './Chapter';
 import moment from 'moment';
+import Chapter from './Chapter';
+import Identifier from './Identifier';
 import RouteMap from './RouteMap';
-import Title from './title/Title';
-import StaticTitle from './title/StaticTitle';
 import DynamicTitle from './title/DynamicTitle';
+import StaticTitle from './title/StaticTitle';
+import Title from './title/Title';
 
 export default class Trip {
 
@@ -90,6 +90,20 @@ export default class Trip {
     const firstChapter = sortedChapters[0];
 
     return firstChapter.startDate;
+  }
+
+  /**
+   *
+   * @return {Date}
+   */
+  get endDate(): Date {
+    const chapterCopy = this.chapters.slice();
+    const sortedChapters = chapterCopy.sort((a: Chapter, b: Chapter) => {
+      return b.startDate - a.startDate;
+    });
+    const lastChapter = sortedChapters.pop();
+
+    return lastChapter.endDate;
   }
 
   /**

@@ -12,7 +12,7 @@ export default function chapterSummaries(state = [], action) {
 
     case CHAPTER_CREATION_STARTED: {
       const newState = [];
-      newState[payload] = [];
+      newState[payload] = '';
       return newState;
     }
 

@@ -1,9 +1,10 @@
+import Trip from '../../models/Trip';
 import {SELECTED} from './actionTypes';
 
-function selectTrip(tripId: String) {
+function selectTrip(trip: Trip) {
   return {
     type: SELECTED,
-    payload: tripId
+    payload: trip
   }
 }
 

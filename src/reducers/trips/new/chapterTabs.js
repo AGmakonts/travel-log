@@ -1,4 +1,4 @@
-import {CHAPTER_CREATION_STARTED, TAB_CHANGED} from '../../../actions/trip/create/actionTypes';
+import {TAB_CHANGED} from '../../../actions/trip/create/actionTypes';
 
 export default function chapterTabs(state = [], action) {
 
@@ -10,14 +10,7 @@ export default function chapterTabs(state = [], action) {
       return newState;
     }
 
-    case CHAPTER_CREATION_STARTED: {
-      const newState = [];
-      newState[payload] = [];
-      return newState;
-    }
-
     default:
       return state;
   }
-
 }
