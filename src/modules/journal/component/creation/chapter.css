@@ -1,0 +1,16 @@
+.title {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.marker {
+    position: relative;
+    top: -30px;
+    left: -15px;
+}
+
+.mapContainer {
+    height: 400px;
+    width: 100%
+}
