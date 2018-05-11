@@ -40,6 +40,40 @@ class Creator extends React.Component {
     this.props.start(0);
   }
 
+  renderChapters() {
+
+    const timelineElements = [];
+    const chapterLocations = this.props.newTrip.chapterLocations;
+    chapterLocations.forEach((location, index) => {
+      timelineElements.push(
+        <Timeline.Item key={`chapter-${index}`} dot={<Icon type="environment" style={{fontSize: '16px'}}/>}>
+          <Chapter
+            index={index}
+            restrictedDates={this.props.newTrip.chapterDates[index-1] ? this.props.newTrip.chapterDates[index-1].end : null}
+            coordinates={this.props.newTrip.chapterLocations[index]}
+            currentTab={this.props.newTrip.chapterTabs[index]}
+            summary={this.props.newTrip.chapterSummaries[index]}
+            onLocationChange={this.handleMapClick}
+            onDateChange={this.handleDateChange}
+            onTabChange={this.handleTabChange}
+            onSummaryUpdate={this.handleSummaryUpdate}
+          />
+
+        </Timeline.Item>
+      );
+
+      timelineElements.push(
+        <Timeline.Item key={`space-${index}`} dot={<Icon type="arrow-down" style={{fontSize: '16px'}}/>} color="black">
+          <div onClick={() => this.props.start(index+1)}>
+            <Divider dashed><Icon type="plus-circle-o"/> Add chapter</Divider>
+          </div>
+        </Timeline.Item>
+      );
+
+    });
+
+    return timelineElements;
+  }
 
   render() {
 
@@ -58,21 +92,7 @@ class Creator extends React.Component {
           <Timeline.Item>
             <Divider dashed><Icon type="plus-circle-o"/> Add travel info</Divider>
           </Timeline.Item>
-          <Timeline.Item dot={<Icon type="environment" style={{fontSize: '16px'}}/>}>
-            <Chapter
-              coordinates={this.props.newTrip.chapterLocations[0]}
-              currentTab={this.props.newTrip.chapterTabs[0]}
-              summary={this.props.newTrip.chapterSummaries[0]}
-              onLocationChange={event => this.handleMapClick(event, 0)}
-              onDateChange={event => this.handleDateChange(event, 0)}
-              onTabChange={event => this.handleTabChange(event, 0)}
-              onSummaryUpdate={event => this.handleSummaryUpdate(event, 0)}
-            />
-
-          </Timeline.Item>
-          <Timeline.Item dot={<Icon type="arrow-down" style={{fontSize: '16px'}}/>} color="black">
-            <Divider dashed><Icon type="plus-circle-o"/> Add chapter</Divider>
-          </Timeline.Item>
+          {this.renderChapters()}
         </Timeline>
       </div>
     );

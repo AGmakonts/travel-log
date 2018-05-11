@@ -18,9 +18,15 @@ export default function chapterLocations(state = [], action) {
     }
 
     case CHAPTER_CREATION_STARTED: {
-      const newState = [];
-      newState[payload] = {};
-      return newState;
+      const chapterState = [...state];
+      if (chapterState[payload]) {
+        const previousEntries = chapterState.slice(0, payload);
+        const furtherEntries = chapterState.slice(payload);
+        const composedNewState = [...previousEntries, {}, ...furtherEntries];
+        return composedNewState;
+      }
+      chapterState[payload] = {};
+      return chapterState;
     }
 
     case apiAction(CHAPTER_LOCATION_CHANGED).SUCCESS: {

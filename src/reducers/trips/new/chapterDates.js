@@ -1,3 +1,4 @@
+import moment from 'moment/moment';
 import {
   CHAPTER_CREATION_STARTED,
   CHAPTER_DATES_CHANGED,
@@ -17,9 +18,15 @@ export default function chapterDates(state = [], action) {
     }
 
     case CHAPTER_CREATION_STARTED: {
-      const newState = [];
-      newState[payload] = null;
-      return newState;
+      const chapterState = [...state];
+      if (chapterState[payload]) {
+        const previousEntries = chapterState.slice(0, payload);
+        const furtherEntries = chapterState.slice(payload);
+        const composedNewState = [...previousEntries, {start: moment(), end: moment()}, ...furtherEntries];
+        return composedNewState;
+      }
+      chapterState[payload] = {start: moment(), end: moment()};
+      return chapterState;
     }
 
     case TRIP_CREATION_CANCELED:

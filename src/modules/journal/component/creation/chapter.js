@@ -12,8 +12,14 @@ const {RangePicker} = DatePicker;
 export default class Chapter extends React.Component {
 
   componentDidMount() {
-    this.props.onDateChange([this.props.dates.start, this.props.dates.end])
+    console.log('test');
+    console.log(this.props.index);
+    this.props.onDateChange([this.props.dates.start, this.props.dates.end], this.props.index)
   }
+
+  disabledDate = (current) => {
+    return current && current < this.props.restrictedDates;
+  };
 
   render() {
 
@@ -30,7 +36,7 @@ export default class Chapter extends React.Component {
             lng: 30.33
           }}
           defaultZoom={0}
-          onClick={this.props.onLocationChange}
+          onClick={event => this.props.onLocationChange(event, this.props.index)}
         >
           {coordinates.lat && coordinates.lng && marker}
         </GoogleMapReact>
@@ -46,7 +52,9 @@ export default class Chapter extends React.Component {
     }];
 
     const contentList = {
-      basic: (<TextArea value={this.props.summary} onChange={(event) => this.props.onSummaryUpdate(event.target.value)} placeholder="Chapter summary" autosize={{minRows: 2}}/>),
+      basic: (<TextArea value={this.props.summary}
+        onChange={(event) => this.props.onSummaryUpdate(event.target.value, this.props.index)}
+        placeholder="Chapter summary" autosize={{minRows: 2}}/>),
       editor: <p>content2</p>
     };
 
@@ -58,11 +66,12 @@ export default class Chapter extends React.Component {
         title={
           <div className={styles.title}>
             {coordinates.formatted || 'Add chapter!'}
-            <RangePicker defaultValue={[moment(), moment()]} onChange={this.props.onDateChange}/>
+            <RangePicker disabledDate={this.disabledDate} defaultValue={[moment(), moment()]}
+              onChange={event => this.props.onDateChange(event, this.props.index)}/>
           </div>
         }
         tabList={tabList}
-        onTabChange={this.props.onTabChange}
+        onTabChange={event => this.props.onTabChange(event, this.props.index)}
         defaultActiveTabKey='basic'
         activeTabKey={this.props.currentTab}
       >
@@ -86,8 +95,10 @@ Chapter.defaultProps = {
 };
 
 Chapter.propTypes = {
+  index: propTypes.number,
   coordinates: propTypes.object,
   dates: propTypes.object,
+  restrictedDates: propTypes.object,
   summary: propTypes.string,
   currentTab: propTypes.string,
   onLocationChange: propTypes.func.isRequired,
