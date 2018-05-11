@@ -49,7 +49,7 @@ class Creator extends React.Component {
         <Timeline.Item key={`chapter-${index}`} dot={<Icon type="environment" style={{fontSize: '16px'}}/>}>
           <Chapter
             index={index}
-            restrictedDates={this.props.newTrip.chapterDates[index-1] ? this.props.newTrip.chapterDates[index-1].end : null}
+            restrictedDates={this.props.newTrip.chapterDates[index - 1] ? this.props.newTrip.chapterDates[index - 1].end : null}
             coordinates={this.props.newTrip.chapterLocations[index]}
             currentTab={this.props.newTrip.chapterTabs[index]}
             summary={this.props.newTrip.chapterSummaries[index]}
@@ -64,7 +64,7 @@ class Creator extends React.Component {
 
       timelineElements.push(
         <Timeline.Item key={`space-${index}`} dot={<Icon type="arrow-down" style={{fontSize: '16px'}}/>} color="black">
-          <div onClick={() => this.props.start(index+1)}>
+          <div onClick={() => this.props.start(index + 1)}>
             <Divider dashed><Icon type="plus-circle-o"/> Add chapter</Divider>
           </div>
         </Timeline.Item>

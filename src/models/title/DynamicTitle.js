@@ -28,7 +28,7 @@ export default class DynamicTitle extends Title {
 
     if (uniqueCountries.length === 1 && uniqueCountries[0] !== undefined) {
       return `${timeOfYear.value} in ${uniqueCountries[0]}`;
-    } else if(uniqueCountries.length === 1) {
+    } else if (uniqueCountries.length === 1) {
       return `Trip to somewhere in ${timeOfYear.value}`;
     }
 

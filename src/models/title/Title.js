@@ -11,7 +11,7 @@ export default class Title {
     return this._title;
   }
 
-  get slug() : String {
-    return this.value.replace(/\s|,\s/g,'-');
+  get slug(): String {
+    return this.value.replace(/\s|,\s/g, '-');
   }
 }

@@ -4,7 +4,7 @@ export default class Service {
     return null;
   }
 
-  handle(action) : Promise {
+  handle(action): Promise {
 
   }
 
