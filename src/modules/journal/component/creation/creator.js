@@ -8,33 +8,37 @@ import changeChapterDates from '../../../../actions/trip/create/changeChapterDat
 import changeChapterLocation from '../../../../actions/trip/create/changeChapterLocation';
 import changeChapterSummary from '../../../../actions/trip/create/changeChapterSummary';
 import save from '../../../../actions/trip/create/save';
+import start from '../../../../actions/trip/create/start';
 import switchTabInChapter from '../../../../actions/trip/create/switchTabInChapter';
 import Chapter from './chapter';
 import styles from './creator.css';
 
 class Creator extends React.Component {
 
-  handleMapClick = (event) => {
+  handleMapClick = (event, index) => {
     const {lat, lng} = event;
-    this.props.changeChapterLocation(lat, lng, 0);
+    this.props.changeChapterLocation(lat, lng, index);
   };
 
-  handleDateChange = (dates) => {
-    this.props.changeChapterDates(dates[0].toDate(), dates[1].toDate(), 0);
+  handleDateChange = (dates, index) => {
+    this.props.changeChapterDates(dates[0].toDate(), dates[1].toDate(), index);
   };
 
-  handleTabChange = (key) => {
-    this.props.switchTabInChapter(key, 0);
+  handleTabChange = (key, index) => {
+    this.props.switchTabInChapter(key, index);
   };
 
-  handleSummaryUpdate = (summary) => {
-    this.props.changeChapterSummary(summary, 0);
+  handleSummaryUpdate = (summary, index) => {
+    this.props.changeChapterSummary(summary, index);
   };
 
   componentWillUnmount() {
     this.props.cancel()
   }
 
+  componentWillMount() {
+    this.props.start(0);
+  }
 
 
   render() {
@@ -59,10 +63,10 @@ class Creator extends React.Component {
               coordinates={this.props.newTrip.chapterLocations[0]}
               currentTab={this.props.newTrip.chapterTabs[0]}
               summary={this.props.newTrip.chapterSummaries[0]}
-              onLocationChange={this.handleMapClick}
-              onDateChange={this.handleDateChange}
-              onTabChange={this.handleTabChange}
-              onSummaryUpdate={this.handleSummaryUpdate}
+              onLocationChange={event => this.handleMapClick(event, 0)}
+              onDateChange={event => this.handleDateChange(event, 0)}
+              onTabChange={event => this.handleTabChange(event, 0)}
+              onSummaryUpdate={event => this.handleSummaryUpdate(event, 0)}
             />
 
           </Timeline.Item>
@@ -82,6 +86,7 @@ function mapDispatchToProps(dispatch) {
     changeChapterSummary,
     switchTabInChapter,
     cancel,
+    start,
     save
   };
   return bindActionCreators(actionCreators, dispatch);
@@ -100,6 +105,7 @@ Creator.propTypes = {
   switchTabInChapter: propTypes.func,
   newTrip: propTypes.object,
   cancel: propTypes.func.isRequired,
+  start: propTypes.func.isRequired,
   save: propTypes.func.isRequired
 };
 

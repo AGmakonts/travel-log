@@ -25,4 +25,9 @@ export default class Chapter {
   get location(): Location {
     return this._location;
   }
+
+
+  get summary(): String {
+    return this._summary;
+  }
 }

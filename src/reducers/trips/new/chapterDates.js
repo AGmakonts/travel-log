@@ -1,4 +1,8 @@
-import {CHAPTER_DATES_CHANGED, TRIP_CREATION_CANCELED} from '../../../actions/trip/create/actionTypes';
+import {
+  CHAPTER_CREATION_STARTED,
+  CHAPTER_DATES_CHANGED,
+  TRIP_CREATION_CANCELED
+} from '../../../actions/trip/create/actionTypes';
 
 export default function chapterDates(state = [], action) {
 
@@ -9,6 +13,12 @@ export default function chapterDates(state = [], action) {
       const newState = [...state];
 
       newState.splice(payload.index, 1, {start, end});
+      return newState;
+    }
+
+    case CHAPTER_CREATION_STARTED: {
+      const newState = [];
+      newState[payload] = [];
       return newState;
     }
 

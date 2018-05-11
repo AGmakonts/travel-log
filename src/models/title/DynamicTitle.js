@@ -26,10 +26,12 @@ export default class DynamicTitle extends Title {
     const uniqueCountries = [... new Set(this._countries)];
     const timeOfYear: TimeOfYear = new TimeOfYear(this._months);
 
-    if (uniqueCountries.length === 1) {
+    if (uniqueCountries.length === 1 && uniqueCountries[0] !== undefined) {
       return `${timeOfYear.value} in ${uniqueCountries[0]}`;
-
+    } else if(uniqueCountries.length === 1) {
+      return `Trip to somewhere in ${timeOfYear.value}`;
     }
+
     const maximumCountries: number = 4;
     const lastCountry: String = uniqueCountries.length > maximumCountries ? 'others' : uniqueCountries.pop();
     const suffix: String = (lastCountry ? `and ${lastCountry}` : '');

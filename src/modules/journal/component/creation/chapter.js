@@ -46,7 +46,7 @@ export default class Chapter extends React.Component {
     }];
 
     const contentList = {
-      basic: (<TextArea placeholder="Chapter summary" autosize={{minRows: 2}}/>),
+      basic: (<TextArea value={this.props.summary} onChange={(event) => this.props.onSummaryUpdate(event.target.value)} placeholder="Chapter summary" autosize={{minRows: 2}}/>),
       editor: <p>content2</p>
     };
 

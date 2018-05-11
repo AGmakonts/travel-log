@@ -1,7 +1,7 @@
-import Trip from './Trip';
 import Chapter from './Chapter';
-import Location from './Location';
 import Identifier from './Identifier';
+import Location from './Location';
+import Trip from './Trip';
 
 export default class TripFactory {
 
@@ -25,7 +25,8 @@ export default class TripFactory {
     const {
       _startDate,
       _endDate,
-      _location
+      _location,
+      _summary
     } = data;
 
     const {
@@ -36,6 +37,9 @@ export default class TripFactory {
       _latitude
     } = _location;
 
-    return new Chapter(new Date(_startDate), new Date(_endDate), new Location(_country, _area, _city, _longitude, _latitude));
+    const startDate = new Date(_startDate);
+    const endDate = new Date(_endDate);
+    const location = new Location(_country, _area, _city, _longitude, _latitude);
+    return new Chapter(startDate, endDate, location, _summary);
   }
 }

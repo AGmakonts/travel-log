@@ -1,4 +1,8 @@
-import {CHAPTER_LOCATION_CHANGED, TRIP_CREATION_CANCELED} from '../../../actions/trip/create/actionTypes';
+import {
+  CHAPTER_CREATION_STARTED,
+  CHAPTER_LOCATION_CHANGED,
+  TRIP_CREATION_CANCELED
+} from '../../../actions/trip/create/actionTypes';
 import {apiAction} from '../../../middleware/api/apiMiddleware';
 
 export default function chapterLocations(state = [], action) {
@@ -10,6 +14,12 @@ export default function chapterLocations(state = [], action) {
       const newState = [...state];
 
       newState.splice(payload.index, 1, {lat, lng});
+      return newState;
+    }
+
+    case CHAPTER_CREATION_STARTED: {
+      const newState = [];
+      newState[payload] = [];
       return newState;
     }
 
