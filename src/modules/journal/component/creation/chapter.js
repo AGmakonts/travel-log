@@ -1,5 +1,4 @@
 import {Card, DatePicker, Icon, Input} from 'antd';
-import GoogleMapReact from 'google-map-react';
 import moment from 'moment';
 import propTypes from 'prop-types';
 import React from 'react';
@@ -10,6 +9,7 @@ import changeChapterLocation from '../../../../actions/trip/create/changeChapter
 import changeChapterSummary from '../../../../actions/trip/create/changeChapterSummary';
 import switchTabInChapter from '../../../../actions/trip/create/switchTabInChapter';
 import styles from './chapter.css';
+import Map from './chapterParts/map';
 
 const {TextArea} = Input;
 const {RangePicker} = DatePicker;
@@ -22,7 +22,7 @@ class Chapter extends React.Component {
       dates: this.props.newTrip.chapterDates[this.props.index],
       locations: this.props.newTrip.chapterLocations[this.props.index],
       summary: this.props.newTrip.chapterSummaries[this.props.index],
-      currentTab: this.props.newTrip.chapterTabs[this.props.index],
+      currentTab: this.props.newTrip.chapterTabs[this.props.index]
     }
   }
 
@@ -49,24 +49,6 @@ class Chapter extends React.Component {
   render() {
 
     const coordinates = this.chapter.locations;
-    const marker = <Icon className={styles.marker} type="environment" lat={coordinates.lat} lng={coordinates.lng}
-      style={{fontSize: 30}}/>;
-
-    const map = (
-      <div className={styles.mapContainer}>
-        <GoogleMapReact
-          bootstrapURLKeys={{key: 'AIzaSyCekIreelGUg_VydHTlm6mJnv6YV6Y70I8'}}
-          defaultCenter={{
-            lat: 59.95,
-            lng: 30.33
-          }}
-          defaultZoom={0}
-          onClick={event => this.props.changeChapterLocation(event.lat, event.lng, this.props.index)}
-        >
-          {coordinates.lat && coordinates.lng && marker}
-        </GoogleMapReact>
-      </div>
-    );
 
     const tabList = [{
       key: 'basic',
@@ -83,18 +65,25 @@ class Chapter extends React.Component {
       editor: <p>content2</p>
     };
 
-    return (
+    const actions = [<Icon key={1} type="save"/>];
+    const map = (
+      <Map onClick={(lat, lng) => this.props.changeChapterLocation(lat, lng, this.props.index)}
+        coordinates={this.chapter.locations}/>
+    );
 
+    const title = (
+      <div className={styles.title}>
+        {coordinates.formatted || 'Add chapter!'}
+        <RangePicker disabledDate={this.disabledDate} defaultValue={[moment(), moment()]}
+          onChange={event => this.props.changeChapterDates(event[0], event[1], this.props.index)}/>
+      </div>
+    );
+
+    return (
       <Card
         cover={map}
-        actions={[<Icon key={1} type="save"/>]}
-        title={
-          <div className={styles.title}>
-            {coordinates.formatted || 'Add chapter!'}
-            <RangePicker disabledDate={this.disabledDate} defaultValue={[moment(), moment()]}
-              onChange={event => this.props.changeChapterDates(event[0], event[1], this.props.index)}/>
-          </div>
-        }
+        actions={actions}
+        title={title}
         tabList={tabList}
         onTabChange={event => this.props.switchTabInChapter(event, this.props.index)}
         defaultActiveTabKey='basic'
