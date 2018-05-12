@@ -3,27 +3,52 @@ import GoogleMapReact from 'google-map-react';
 import moment from 'moment';
 import propTypes from 'prop-types';
 import React from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import changeChapterDates from '../../../../actions/trip/create/changeChapterDates';
+import changeChapterLocation from '../../../../actions/trip/create/changeChapterLocation';
+import changeChapterSummary from '../../../../actions/trip/create/changeChapterSummary';
+import switchTabInChapter from '../../../../actions/trip/create/switchTabInChapter';
 import styles from './chapter.css';
 
 const {TextArea} = Input;
 const {RangePicker} = DatePicker;
 
 
-export default class Chapter extends React.Component {
+class Chapter extends React.Component {
 
-  componentDidMount() {
-    console.log('test');
-    console.log(this.props.index);
-    this.props.onDateChange([this.props.dates.start, this.props.dates.end], this.props.index)
+  get chapter() {
+    return {
+      dates: this.props.newTrip.chapterDates[this.props.index],
+      locations: this.props.newTrip.chapterLocations[this.props.index],
+      summary: this.props.newTrip.chapterSummaries[this.props.index],
+      currentTab: this.props.newTrip.chapterTabs[this.props.index],
+    }
   }
 
+  /**
+   *
+   */
+  componentDidMount() {
+    this.props.changeChapterDates(this.chapter.dates.start, this.chapter.dates.end, this.props.index);
+  }
+
+  /**
+   *
+   * @param current
+   * @return {*|boolean}
+   */
   disabledDate = (current) => {
     return current && current < this.props.restrictedDates;
   };
 
+  /**
+   *
+   * @return {*}
+   */
   render() {
 
-    const coordinates = this.props.coordinates;
+    const coordinates = this.chapter.locations;
     const marker = <Icon className={styles.marker} type="environment" lat={coordinates.lat} lng={coordinates.lng}
       style={{fontSize: 30}}/>;
 
@@ -36,7 +61,7 @@ export default class Chapter extends React.Component {
             lng: 30.33
           }}
           defaultZoom={0}
-          onClick={event => this.props.onLocationChange(event, this.props.index)}
+          onClick={event => this.props.changeChapterLocation(event.lat, event.lng, this.props.index)}
         >
           {coordinates.lat && coordinates.lng && marker}
         </GoogleMapReact>
@@ -52,8 +77,8 @@ export default class Chapter extends React.Component {
     }];
 
     const contentList = {
-      basic: (<TextArea value={this.props.summary}
-        onChange={(event) => this.props.onSummaryUpdate(event.target.value, this.props.index)}
+      basic: (<TextArea value={this.chapter.summary}
+        onChange={(event) => this.props.changeChapterSummary(event.target.value, this.props.index)}
         placeholder="Chapter summary" autosize={{minRows: 2}}/>),
       editor: <p>content2</p>
     };
@@ -67,42 +92,50 @@ export default class Chapter extends React.Component {
           <div className={styles.title}>
             {coordinates.formatted || 'Add chapter!'}
             <RangePicker disabledDate={this.disabledDate} defaultValue={[moment(), moment()]}
-              onChange={event => this.props.onDateChange(event, this.props.index)}/>
+              onChange={event => this.props.changeChapterDates(event[0], event[1], this.props.index)}/>
           </div>
         }
         tabList={tabList}
-        onTabChange={event => this.props.onTabChange(event, this.props.index)}
+        onTabChange={event => this.props.switchTabInChapter(event, this.props.index)}
         defaultActiveTabKey='basic'
-        activeTabKey={this.props.currentTab}
+        activeTabKey={this.chapter.currentTab}
       >
-        {contentList[this.props.currentTab]}
+        {contentList[this.chapter.currentTab]}
       </Card>
     );
   }
 
 }
 
+function mapDispatchToProps(dispatch) {
+  const actionCreators = {
+    changeChapterLocation,
+    changeChapterDates,
+    changeChapterSummary,
+    switchTabInChapter
+  };
+  return bindActionCreators(actionCreators, dispatch);
+}
+
+function mapStateToProps(state) {
+  return {
+    newTrip: state.trips.newTrip
+  }
+}
+
 Chapter.defaultProps = {
-  coordinates: {
-    lat: null,
-    lng: null
-  },
-  dates: {
-    start: moment(),
-    end: moment()
-  },
   currentTab: 'basic'
 };
 
 Chapter.propTypes = {
   index: propTypes.number,
-  coordinates: propTypes.object,
-  dates: propTypes.object,
+  newTrip: propTypes.object,
   restrictedDates: propTypes.object,
-  summary: propTypes.string,
-  currentTab: propTypes.string,
-  onLocationChange: propTypes.func.isRequired,
-  onDateChange: propTypes.func.isRequired,
-  onSummaryUpdate: propTypes.func.isRequired,
-  onTabChange: propTypes.func.isRequired
+  changeChapterLocation: propTypes.func.isRequired,
+  changeChapterDates: propTypes.func.isRequired,
+  changeChapterSummary: propTypes.func.isRequired,
+  switchTabInChapter: propTypes.func.isRequired
 };
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chapter);

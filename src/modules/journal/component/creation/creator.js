@@ -4,33 +4,12 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import cancel from '../../../../actions/trip/create/cancel';
-import changeChapterDates from '../../../../actions/trip/create/changeChapterDates';
-import changeChapterLocation from '../../../../actions/trip/create/changeChapterLocation';
-import changeChapterSummary from '../../../../actions/trip/create/changeChapterSummary';
 import save from '../../../../actions/trip/create/save';
 import start from '../../../../actions/trip/create/start';
-import switchTabInChapter from '../../../../actions/trip/create/switchTabInChapter';
 import Chapter from './chapter';
 import styles from './creator.css';
 
 class Creator extends React.Component {
-
-  handleMapClick = (event, index) => {
-    const {lat, lng} = event;
-    this.props.changeChapterLocation(lat, lng, index);
-  };
-
-  handleDateChange = (dates, index) => {
-    this.props.changeChapterDates(dates[0].toDate(), dates[1].toDate(), index);
-  };
-
-  handleTabChange = (key, index) => {
-    this.props.switchTabInChapter(key, index);
-  };
-
-  handleSummaryUpdate = (summary, index) => {
-    this.props.changeChapterSummary(summary, index);
-  };
 
   componentWillUnmount() {
     this.props.cancel()
@@ -42,9 +21,11 @@ class Creator extends React.Component {
 
   renderChapters() {
     const chapterLocations = this.props.newTrip.chapterLocations;
-    return chapterLocations.map((location, index) => {
-      return this._renderChapterDividerPair(index);
-    }).flatMap(element => element);
+    return chapterLocations
+      .map((location, index) => {
+        return this._renderChapterDividerPair(index);
+      })
+      .flatMap(element => element);
   }
 
   /**
@@ -59,15 +40,7 @@ class Creator extends React.Component {
         <Chapter
           index={index}
           restrictedDates={this.props.newTrip.chapterDates[index - 1] ? this.props.newTrip.chapterDates[index - 1].end : null}
-          coordinates={this.props.newTrip.chapterLocations[index]}
-          currentTab={this.props.newTrip.chapterTabs[index]}
-          summary={this.props.newTrip.chapterSummaries[index]}
-          onLocationChange={this.handleMapClick}
-          onDateChange={this.handleDateChange}
-          onTabChange={this.handleTabChange}
-          onSummaryUpdate={this.handleSummaryUpdate}
         />
-
       </Timeline.Item>
     );
 
@@ -112,13 +85,9 @@ class Creator extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   const actionCreators = {
-    changeChapterLocation,
-    changeChapterDates,
-    changeChapterSummary,
-    switchTabInChapter,
     cancel,
-    start,
-    save
+    save,
+    start
   };
   return bindActionCreators(actionCreators, dispatch);
 }
@@ -130,14 +99,10 @@ function mapStateToProps(state) {
 }
 
 Creator.propTypes = {
-  changeChapterLocation: propTypes.func,
-  changeChapterDates: propTypes.func,
-  changeChapterSummary: propTypes.func,
-  switchTabInChapter: propTypes.func,
   newTrip: propTypes.object,
   cancel: propTypes.func.isRequired,
-  start: propTypes.func.isRequired,
-  save: propTypes.func.isRequired
+  save: propTypes.func.isRequired,
+  start: propTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Creator);

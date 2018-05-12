@@ -26,8 +26,35 @@ export default class Chapter {
     return this._location;
   }
 
-
   get summary(): String {
     return this._summary;
+  }
+
+  /**
+   *
+   * @param start
+   * @param end
+   * @return {Chapter}
+   */
+  withDates(start: Date, end: Date) : Chapter {
+    return new Chapter(start, end, this.location, this.summary);
+  }
+
+  /**
+   *
+   * @param location
+   * @return {Chapter}
+   */
+  withLocation(location: Location) : Chapter {
+    return new Chapter(this.startDate, this.endDate, this.location, this.summary);
+  }
+
+  /**
+   *
+   * @param summary
+   * @return {Chapter}
+   */
+  withSummary(summary: String) : Chapter {
+    return new Chapter(this.startDate, this.endDate, this.location, summary);
   }
 }
