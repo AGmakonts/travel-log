@@ -45,6 +45,7 @@ class Journal extends React.Component {
             <Content style={{background: '#fff', padding: 24, margin: 0, minHeight: 280}}>
               <Route path='/newTrip' component={Creator}/>
               <Route path='/trip/:id/:name' render={this._getConfiguredTripDetailsComponent}/>
+              <Route path='/oauth/flickr' render={props => <div>{JSON.stringify(props)}</div>}/>
             </Content>
           </Layout>
         </Layout>

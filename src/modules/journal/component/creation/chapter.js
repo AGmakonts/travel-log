@@ -1,4 +1,4 @@
-import {Card, DatePicker, Icon, Input} from 'antd';
+import {Card, DatePicker, Icon} from 'antd';
 import moment from 'moment';
 import propTypes from 'prop-types';
 import React from 'react';
@@ -9,9 +9,9 @@ import changeChapterLocation from '../../../../actions/trip/create/changeChapter
 import changeChapterSummary from '../../../../actions/trip/create/changeChapterSummary';
 import switchTabInChapter from '../../../../actions/trip/create/switchTabInChapter';
 import styles from './chapter.css';
+import BasicInfo from './chapterParts/basicInfo';
 import Map from './chapterParts/map';
 
-const {TextArea} = Input;
 const {RangePicker} = DatePicker;
 
 
@@ -22,7 +22,7 @@ class Chapter extends React.Component {
       dates: this.props.newTrip.chapterDates[this.props.index],
       locations: this.props.newTrip.chapterLocations[this.props.index],
       summary: this.props.newTrip.chapterSummaries[this.props.index],
-      currentTab: this.props.newTrip.chapterTabs[this.props.index]
+      currentTab: this.props.newTrip.chapterTabs[this.props.index] || 'basic'
     }
   }
 
@@ -59,9 +59,8 @@ class Chapter extends React.Component {
     }];
 
     const contentList = {
-      basic: (<TextArea value={this.chapter.summary}
-        onChange={(event) => this.props.changeChapterSummary(event.target.value, this.props.index)}
-        placeholder="Chapter summary" autosize={{minRows: 2}}/>),
+      basic: <BasicInfo summary={this.chapter.summary}
+        onChange={event => this.props.changeChapterSummary(event, this.props.index)}/>,
       editor: <p>content2</p>
     };
 
@@ -111,10 +110,6 @@ function mapStateToProps(state) {
     newTrip: state.trips.newTrip
   }
 }
-
-Chapter.defaultProps = {
-  currentTab: 'basic'
-};
 
 Chapter.propTypes = {
   index: propTypes.number,
