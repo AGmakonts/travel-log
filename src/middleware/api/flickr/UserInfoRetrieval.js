@@ -1,8 +1,10 @@
 import Flickr from 'flickr-sdk';
+import {LOAD} from 'redux-storage';
 import {FLICKR_USERNAME_ENTERED} from '../../../actions/settings/connectedAccounts/actionTypes';
+import {apiAction} from '../apiMiddleware';
 import Service from '../Service';
 
-export default class User extends Service {
+export default class UserInfoRetrieval extends Service {
 
   _flickr: Flickr;
 
@@ -14,17 +16,17 @@ export default class User extends Service {
   }
 
   get trigger(): String {
-    return FLICKR_USERNAME_ENTERED
+    return [
+      apiAction(FLICKR_USERNAME_ENTERED).SUCCESS,
+      apiAction(LOAD).SUCCESS
+    ];
   }
 
   handle(action): Promise {
 
-    return this._flickr.people
-      .findByUsername({
-        username: action.payload
-      })
-      .then(this._extractId)
-      .then(this._getInfo)
+    return this._flickr.people.getInfo({
+      user_id: action.payload.accounts ? action.payload.accounts.flickr : action.payload
+    })
       .then(this._extractPerson)
       .then(this._formatResult);
   }
@@ -38,19 +40,9 @@ export default class User extends Service {
       name: person.username._content,
       description: person.description._content
     }
-  }
+  };
 
   _extractPerson = (personResponse) => {
     return personResponse.body.person;
-  }
-
-  _getInfo = (id) => {
-    return this._flickr.people.getInfo({
-      user_id: id
-    })
-  }
-
-  _extractId = (result) => {
-    return result.body.user.nsid;
-  }
+  };
 }

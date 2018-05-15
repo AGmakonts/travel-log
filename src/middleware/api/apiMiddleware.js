@@ -14,8 +14,7 @@ export function apiAction(action) {
 
 export default function apiMiddleware(services: Service[]) {
 
-  return store => next => action => {
-
+  let handle = function (action, next) {
     const actionType = action.type;
 
     const PRE = apiAction(actionType).PRE;
@@ -25,19 +24,34 @@ export default function apiMiddleware(services: Service[]) {
 
     next(action);
     services.forEach((service: Service) => {
-      if (service.trigger === action.type) {
+
+      const currentServiceTrigger = service.trigger;
+      const isComposite = Array.isArray(currentServiceTrigger);
+      const compositeContainsAction = currentServiceTrigger.indexOf(actionType) !== -1;
+      const canHandleAsComposite = isComposite && compositeContainsAction;
+      const canHandleAsSimple = currentServiceTrigger === actionType;
+      const canHandle = canHandleAsComposite || canHandleAsSimple;
+
+      if (canHandle) {
         next({type: PRE, origin: action.payload});
         service.handle(action)
           .then(response => {
-            next({type: SUCCESS, payload: response, origin: action});
+            handle({type: SUCCESS, payload: response, origin: action}, next);
           })
           .catch(error => {
-            next({type: ERROR, payload: error, origin: action});
+            handle({type: ERROR, payload: error, origin: action}, next);
+
           })
           .finally(() => {
-            next({type: POST, origin: action});
+            handle({type: POST, origin: action}, next);
           });
       }
     });
+  };
+
+
+  return store => next => action => {
+
+    handle(action, next);
   }
 }

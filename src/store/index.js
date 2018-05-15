@@ -8,8 +8,10 @@ import {createLoader, createMiddleware} from 'redux-storage';
 import createEngine from 'redux-storage-engine-localstorage';
 import apiMiddleware from '../middleware/api/apiMiddleware';
 import Authentication from '../middleware/api/firebase/Authentication';
+import SettingsReader from '../middleware/api/firebase/SettingsReader';
 import SettingsWriter from '../middleware/api/firebase/SettingsWriter';
-import User from '../middleware/api/flickr/User';
+import UserIdRetrieval from '../middleware/api/flickr/UserIdRetrieval';
+import UserInfoRetrieval from '../middleware/api/flickr/UserInfoRetrieval';
 import ReverseGeocoder from '../middleware/api/google/ReverseGeocoder';
 import rootReducer from '../reducers/index';
 
@@ -20,7 +22,9 @@ const apiServices = [
   new ReverseGeocoder(createClient({key: 'AIzaSyCekIreelGUg_VydHTlm6mJnv6YV6Y70I8'})),
   new Authentication(),
   new SettingsWriter(),
-  new User('5ef695553e6a392c843cd544d4738967')
+  new SettingsReader(),
+  new UserIdRetrieval('5ef695553e6a392c843cd544d4738967'),
+  new UserInfoRetrieval('5ef695553e6a392c843cd544d4738967')
 ];
 
 const middleware = [
