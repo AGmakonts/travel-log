@@ -8,6 +8,7 @@ import toggle from '../../../actions/settings/toggle';
 import addTrip from '../../../actions/trip/add';
 import selectTrip from '../../../actions/trip/select';
 import Trip from '../../../models/Trip';
+import Settings from '../../settings/settings';
 import Creator from './creation/creator';
 import TripDetails from './tripDetails';
 import TripList from './tripList';
@@ -38,9 +39,7 @@ class Journal extends React.Component {
           visible={this.props.settingsVisible}
           onCancel={this.props.toggleSettings}
         >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+          <Settings/>
         </Modal>
         <Header className="header">
           <div className="logo"/>
@@ -55,7 +54,8 @@ class Journal extends React.Component {
             <Menu.Item key="3">nav 3</Menu.Item>
             <Dropdown overlay={menu} trigger={['click']}>
               <a className="ant-dropdown-link" href="#">
-                <Avatar shape="square" src={this.props.currentUser.photoURL} /> {this.props.currentUser.displayName} <Icon type="down" />
+                <Avatar shape="square" src={this.props.currentUser.photoURL}/> {this.props.currentUser.displayName}
+                <Icon type="down"/>
               </a>
             </Dropdown>
           </Menu>
