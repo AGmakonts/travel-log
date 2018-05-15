@@ -8,6 +8,7 @@ import {createLoader, createMiddleware} from 'redux-storage';
 import createEngine from 'redux-storage-engine-localstorage';
 import apiMiddleware from '../middleware/api/apiMiddleware';
 import Authentication from '../middleware/api/firebase/Authentication';
+import User from '../middleware/api/flickr/User';
 import ReverseGeocoder from '../middleware/api/google/ReverseGeocoder';
 import rootReducer from '../reducers/index';
 
@@ -16,7 +17,8 @@ const engine = createEngine('tripList-log-state');
 const history = createHistory();
 const apiServices = [
   new ReverseGeocoder(createClient({key: 'AIzaSyCekIreelGUg_VydHTlm6mJnv6YV6Y70I8'})),
-  new Authentication()
+  new Authentication(),
+  new User('5ef695553e6a392c843cd544d4738967')
 ];
 
 const middleware = [
