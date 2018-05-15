@@ -65,7 +65,7 @@ export default class TripList extends React.Component {
 
     return (
       <Menu.Item key={identifier}>
-        <Link to={`/trip/${identifier}/${title.slug}`}>
+        <Link to={`/journal/trip/${identifier}/${title.slug}`}>
           {title.value} <Badge style={{backgroundColor: '#fff', color: '#999'}} count={trip.chapterCount}/>
         </Link>
       </Menu.Item>);
@@ -99,7 +99,7 @@ export default class TripList extends React.Component {
         mode="inline"
         style={this.props.style}
       >
-        <Menu.Item key={TripList.CREATION_INTENT_KEY}><Link to='/newTrip'>Add new trip</Link></Menu.Item>
+        <Menu.Item key={TripList.CREATION_INTENT_KEY}><Link to='/journal/newTrip'>Add new trip</Link></Menu.Item>
         <Menu.Divider key='divider'/>
 
         {this.renderList()}

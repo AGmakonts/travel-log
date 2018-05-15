@@ -1,7 +1,7 @@
 import propTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
-import {Redirect, Route} from 'react-router';
+import {Redirect, Route, withRouter} from 'react-router';
 
 class PrivateRoute extends React.Component {
 
@@ -14,6 +14,7 @@ class PrivateRoute extends React.Component {
     return (
       <Route
         path={this.props.path}
+        exact={this.props.exact}
         render={props =>
           allow ? (
             <Component {...props} />
@@ -32,7 +33,8 @@ class PrivateRoute extends React.Component {
 }
 
 PrivateRoute.defaultProps = {
-  invert: false
+  invert: false,
+  exact: false
 };
 
 PrivateRoute.propTypes = {
@@ -40,7 +42,8 @@ PrivateRoute.propTypes = {
   redirect: propTypes.string.isRequired,
   isAuthenticated: propTypes.bool.isRequired,
   path: propTypes.string,
-  invert: propTypes.bool
+  invert: propTypes.bool,
+  exact: propTypes.bool
 };
 
 function mapStateToProps(state) {
@@ -49,4 +52,4 @@ function mapStateToProps(state) {
   }
 };
 
-export default connect(mapStateToProps)(PrivateRoute);
+export default withRouter(connect(mapStateToProps)(PrivateRoute));

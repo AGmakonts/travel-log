@@ -1,4 +1,4 @@
-import {Dropdown, Icon, Layout, Menu, Modal} from 'antd';
+import {Avatar, Dropdown, Icon, Layout, Menu, Modal} from 'antd';
 import propTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
@@ -55,7 +55,7 @@ class Journal extends React.Component {
             <Menu.Item key="3">nav 3</Menu.Item>
             <Dropdown overlay={menu} trigger={['click']}>
               <a className="ant-dropdown-link" href="#">
-                {this.props.currentUser.displayName} <Icon type="down" />
+                <Avatar shape="square" src={this.props.currentUser.photoURL} /> {this.props.currentUser.displayName} <Icon type="down" />
               </a>
             </Dropdown>
           </Menu>
@@ -66,8 +66,8 @@ class Journal extends React.Component {
           </Sider>
           <Layout style={{padding: '0 24px 24px'}}>
             <Content style={{background: '#fff', padding: 24, margin: 0, minHeight: 280}}>
-              <Route path='/newTrip' component={Creator}/>
-              <Route path='/trip/:id/:name' render={this._getConfiguredTripDetailsComponent}/>
+              <Route path='/journal/newTrip' component={Creator}/>
+              <Route path='/journal/trip/:id/:name' render={this._getConfiguredTripDetailsComponent}/>
             </Content>
           </Layout>
         </Layout>
