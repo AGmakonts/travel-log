@@ -7,6 +7,7 @@ import logger from 'redux-logger'
 import {createLoader, createMiddleware} from 'redux-storage';
 import createEngine from 'redux-storage-engine-localstorage';
 import apiMiddleware from '../middleware/api/apiMiddleware';
+import Authentication from '../middleware/api/firebase/Authentication';
 import ReverseGeocoder from '../middleware/api/google/ReverseGeocoder';
 import rootReducer from '../reducers/index';
 
@@ -14,7 +15,8 @@ import rootReducer from '../reducers/index';
 const engine = createEngine('tripList-log-state');
 const history = createHistory();
 const apiServices = [
-  new ReverseGeocoder(createClient({key: 'AIzaSyCekIreelGUg_VydHTlm6mJnv6YV6Y70I8'}))
+  new ReverseGeocoder(createClient({key: 'AIzaSyCekIreelGUg_VydHTlm6mJnv6YV6Y70I8'})),
+  new Authentication()
 ];
 
 const middleware = [

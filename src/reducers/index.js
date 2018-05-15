@@ -7,8 +7,10 @@ import chapterSummaries from './trips/new/chapterSummaries';
 import chapterTabs from './trips/new/chapterTabs';
 import selected from './trips/selected';
 import tripList from './trips/tripList';
+import currentUser from './user/currentUser';
 
 export default combineReducers({
+  currentUser,
   trips: combineReducers({
     tripList,
     collection,

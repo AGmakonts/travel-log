@@ -39,7 +39,5 @@ export default function apiMiddleware(services: Service[]) {
           });
       }
     });
-
   }
-
 }
