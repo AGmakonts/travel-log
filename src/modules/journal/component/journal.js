@@ -1,9 +1,10 @@
-import {Layout, Menu} from 'antd';
+import {Dropdown, Icon, Layout, Menu, Modal} from 'antd';
 import propTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
 import {Route, withRouter} from 'react-router';
 import {bindActionCreators} from 'redux';
+import toggle from '../../../actions/settings/toggle';
 import addTrip from '../../../actions/trip/add';
 import selectTrip from '../../../actions/trip/select';
 import Trip from '../../../models/Trip';
@@ -21,9 +22,26 @@ class Journal extends React.Component {
   render() {
 
     const tripList = <TripList style={{height: '100%', borderRight: 0}} tripList={this.props.tripList}/>;
+    const menu = (
+      <Menu>
+        <Menu.Item onClick={this.props.toggleSettings}>Settings</Menu.Item>
+        <Menu.Item>
+          <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">Logout</a>
+        </Menu.Item>
+      </Menu>
+    );
 
     return (
       <Layout>
+        <Modal
+          title="Your Travel Log settings"
+          visible={this.props.settingsVisible}
+          onCancel={this.props.toggleSettings}
+        >
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </Modal>
         <Header className="header">
           <div className="logo"/>
           <Menu
@@ -35,6 +53,11 @@ class Journal extends React.Component {
             <Menu.Item key="1">nav 1</Menu.Item>
             <Menu.Item key="2">nav 2</Menu.Item>
             <Menu.Item key="3">nav 3</Menu.Item>
+            <Dropdown overlay={menu} trigger={['click']}>
+              <a className="ant-dropdown-link" href="#">
+                {this.props.currentUser.displayName} <Icon type="down" />
+              </a>
+            </Dropdown>
           </Menu>
         </Header>
         <Layout>
@@ -45,7 +68,6 @@ class Journal extends React.Component {
             <Content style={{background: '#fff', padding: 24, margin: 0, minHeight: 280}}>
               <Route path='/newTrip' component={Creator}/>
               <Route path='/trip/:id/:name' render={this._getConfiguredTripDetailsComponent}/>
-              <Route path='/oauth/flickr' render={props => <div>{JSON.stringify(props)}</div>}/>
             </Content>
           </Layout>
         </Layout>
@@ -68,7 +90,8 @@ class Journal extends React.Component {
 function mapDispatchToProps(dispatch) {
   const actionCreators = {
     addTrip,
-    selectTrip
+    selectTrip,
+    toggleSettings: toggle
   };
   return bindActionCreators(actionCreators, dispatch);
 }
@@ -76,14 +99,19 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
   return {
     tripList: state.trips.tripList,
-    selected: state.trips.selected
+    selected: state.trips.selected,
+    currentUser: state.currentUser,
+    settingsVisible: !!state.settings.visible
   }
 }
 
 Journal.propTypes = {
   selectTrip: propTypes.func.isRequired,
   tripList: propTypes.array.isRequired,
-  addTrip: propTypes.func.isRequired
+  addTrip: propTypes.func.isRequired,
+  currentUser: propTypes.object.isRequired,
+  settingsVisible: propTypes.bool.isRequired,
+  toggleSettings: propTypes.func.isRequired
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Journal));
