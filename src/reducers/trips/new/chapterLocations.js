@@ -4,6 +4,7 @@ import {
   TRIP_CREATION_CANCELED
 } from '../../../actions/trip/create/actionTypes';
 import {apiAction} from '../../../middleware/api/apiMiddleware';
+import ReverseGeocoder from '../../../middleware/api/google/ReverseGeocoder';
 
 export default function chapterLocations(state = [], action) {
 
@@ -29,7 +30,7 @@ export default function chapterLocations(state = [], action) {
       return chapterState;
     }
 
-    case apiAction(CHAPTER_LOCATION_CHANGED).SUCCESS: {
+    case apiAction(CHAPTER_LOCATION_CHANGED, ReverseGeocoder).SUCCESS: {
 
       const index = action.origin.payload.index;
       const originLat = action.origin.payload.lat;

@@ -1,14 +1,18 @@
 import Service from './Service';
 
-export function apiAction(action) {
+export function apiAction(action, service: Service) {
 
-  const ACTION_TEMPLATE = `${action}.API_MIDDLEWARE`;
+
+  const name = service.name || service.constructor.name;
+  const interceptorPrefix = `@@apiInterceptor/`;
+  action = action.replace(interceptorPrefix,'');
+  const ACTION_TEMPLATE = `${interceptorPrefix}${name}`;
 
   return {
-    PRE: `${ACTION_TEMPLATE}.PRE`,
-    POST: `${ACTION_TEMPLATE}.POST`,
-    SUCCESS: `${ACTION_TEMPLATE}.SUCCESS`,
-    ERROR: `${ACTION_TEMPLATE}.ERROR`
+    PRE: `${ACTION_TEMPLATE}.PRE/${action}`,
+    POST: `${ACTION_TEMPLATE}.POST/${action}`,
+    SUCCESS: `${ACTION_TEMPLATE}.SUCCESS/${action}`,
+    ERROR: `${ACTION_TEMPLATE}.ERROR/${action}`
   };
 }
 
@@ -17,13 +21,15 @@ export default function apiMiddleware(services: Service[]) {
   let handle = function (action, next) {
     const actionType = action.type;
 
-    const PRE = apiAction(actionType).PRE;
-    const POST = apiAction(actionType).POST;
-    const SUCCESS = apiAction(actionType).SUCCESS;
-    const ERROR = apiAction(actionType).ERROR;
+
 
     next(action);
     services.forEach((service: Service) => {
+
+      const PRE = apiAction(actionType, service).PRE;
+      const POST = apiAction(actionType, service).POST;
+      const SUCCESS = apiAction(actionType, service).SUCCESS;
+      const ERROR = apiAction(actionType, service).ERROR;
 
       const currentServiceTrigger = service.trigger;
       const isComposite = Array.isArray(currentServiceTrigger);
