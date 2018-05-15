@@ -8,12 +8,14 @@ class PrivateRoute extends React.Component {
   render() {
     const Component = this.props.component;
     const authenticated = this.props.isAuthenticated;
+    const invert = this.props.invert;
+    const allow = !invert ? authenticated : !authenticated;
 
     return (
       <Route
         path={this.props.path}
         render={props =>
-          authenticated ? (
+          allow ? (
             <Component {...props} />
           ) : (
             <Redirect
@@ -29,11 +31,16 @@ class PrivateRoute extends React.Component {
   }
 }
 
+PrivateRoute.defaultProps = {
+  invert: false
+};
+
 PrivateRoute.propTypes = {
   component: propTypes.func.isRequired,
   redirect: propTypes.string.isRequired,
   isAuthenticated: propTypes.bool.isRequired,
-  path: propTypes.string
+  path: propTypes.string,
+  invert: propTypes.bool
 };
 
 function mapStateToProps(state) {

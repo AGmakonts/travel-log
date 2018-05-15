@@ -1,7 +1,7 @@
 import 'antd/dist/antd.css';
 import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
-import {Route, withRouter} from 'react-router';
+import {withRouter} from 'react-router';
 import './App.css';
 import firebase from './config/firebase.js';
 import Login from './modules/authentication/component/login';
@@ -20,7 +20,7 @@ class App extends Component {
     return (
       <Fragment>
         <PrivateRoute component={Journal} path={'/'} redirect='/login'/>
-        <Route component={Login} path='/login'/>
+        <PrivateRoute component={Login} path='/login' redirect='/' invert/>
       </Fragment>
     );
   }
