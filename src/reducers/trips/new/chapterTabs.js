@@ -16,8 +16,7 @@ export default function chapterTabs(state = [], action) {
       if (chapterState[payload]) {
         const previousEntries = chapterState.slice(0, payload);
         const furtherEntries = chapterState.slice(payload);
-        const composedNewState = [...previousEntries, 'basic', ...furtherEntries];
-        return composedNewState;
+        return [...previousEntries, 'basic', ...furtherEntries];
       }
 
       chapterState[payload] = 'basic';
