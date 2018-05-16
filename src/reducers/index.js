@@ -8,6 +8,8 @@ import chapterDates from './trips/new/chapterDates';
 import chapterLocations from './trips/new/chapterLocations';
 import chapterSummaries from './trips/new/chapterSummaries';
 import chapterTabs from './trips/new/chapterTabs';
+import albumList from './trips/new/flickr/albumList';
+import photoBrowser from './trips/new/photoBrowser';
 import selected from './trips/selected';
 import tripList from './trips/tripList';
 import currentUser from './user/currentUser';
@@ -28,6 +30,10 @@ export default combineReducers({
     collection,
     selected,
     newTrip: combineReducers({
+      flickr: combineReducers({
+        albumList
+      }),
+      photoBrowser,
       chapterLocations,
       chapterDates,
       chapterTabs,

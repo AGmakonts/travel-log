@@ -1,7 +1,7 @@
 import {Card, DatePicker, Icon} from 'antd';
 import moment from 'moment';
 import propTypes from 'prop-types';
-import React from 'react';
+import React, {Fragment} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import changeChapterDates from '../../../../actions/trip/create/changeChapterDates';
@@ -11,7 +11,8 @@ import fetchAddressDetails from '../../../../actions/trip/create/location/fetchA
 import switchTabInChapter from '../../../../actions/trip/create/switchTabInChapter';
 import styles from './chapter.css';
 import BasicInfo from './chapterParts/basicInfo';
-import CoverBrowser from './chapterParts/coverBrowser';
+import Cover from './chapterParts/cover';
+import CoverBrowser from './chapterParts/photoBrowser';
 import Map from './chapterParts/map';
 
 const {RangePicker} = DatePicker;
@@ -33,7 +34,6 @@ class Chapter extends React.Component {
    */
   componentDidMount() {
     this.props.changeChapterDates(this.chapter.dates.start, this.chapter.dates.end, this.props.index);
-    this.props.fetchAlbums(this.props.flickrUser);
   }
 
   /**
@@ -73,8 +73,8 @@ class Chapter extends React.Component {
         coordinates={this.chapter.locations}/>
     );
 
-    const coverBrowser = (
-      <CoverBrowser/>
+    const cover = (
+      <Cover onSelectionIntent={() => this.props.openPhotoBrowser(this.props.index, 'cover')}/>
     );
 
     const title = (
@@ -86,17 +86,20 @@ class Chapter extends React.Component {
     );
 
     return (
-      <Card
-        cover={this.chapter.currentTab === 'basic' ? map : coverBrowser}
-        actions={actions}
-        title={title}
-        tabList={tabList}
-        onTabChange={event => this.props.switchTabInChapter(event, this.props.index)}
-        defaultActiveTabKey='basic'
-        activeTabKey={this.chapter.currentTab}
-      >
-        {contentList[this.chapter.currentTab]}
-      </Card>
+      <Fragment>
+
+        <Card
+          cover={this.chapter.currentTab === 'basic' ? map : cover}
+          actions={actions}
+          title={title}
+          tabList={tabList}
+          onTabChange={event => this.props.switchTabInChapter(event, this.props.index)}
+          defaultActiveTabKey='basic'
+          activeTabKey={this.chapter.currentTab}
+        >
+          {contentList[this.chapter.currentTab]}
+        </Card>
+      </Fragment>
     );
   }
 
@@ -108,15 +111,13 @@ function mapDispatchToProps(dispatch) {
     changeChapterDates,
     changeChapterSummary,
     switchTabInChapter,
-    fetchAlbums
   };
   return bindActionCreators(actionCreators, dispatch);
 }
 
 function mapStateToProps(state) {
   return {
-    newTrip: state.trips.newTrip,
-    flickrUser: state.settings.accounts.flickr.user.id
+    newTrip: state.trips.newTrip
   }
 }
 
@@ -128,8 +129,7 @@ Chapter.propTypes = {
   changeChapterDates: propTypes.func.isRequired,
   changeChapterSummary: propTypes.func.isRequired,
   switchTabInChapter: propTypes.func.isRequired,
-  fetchAlbums: propTypes.func.isRequired,
-  flickrUser: propTypes.string.isRequired
+  openPhotoBrowser: propTypes.func
 };
 
 

@@ -4,9 +4,12 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import cancel from '../../../../actions/trip/create/cancel';
+import dismissPhotoBrowser from '../../../../actions/trip/create/dismissPhotoBrowser';
+import openPhotoBrowser from '../../../../actions/trip/create/openPhotoBrowser';
 import save from '../../../../actions/trip/create/save';
 import start from '../../../../actions/trip/create/start';
 import Chapter from './chapter';
+import PhotoBrowser from './chapterParts/photoBrowser';
 import styles from './creator.css';
 
 class Creator extends React.Component {
@@ -40,6 +43,7 @@ class Creator extends React.Component {
         <Chapter
           index={index}
           restrictedDates={this.props.newTrip.chapterDates[index - 1] ? this.props.newTrip.chapterDates[index - 1].end : null}
+          openPhotoBrowser={this.props.openPhotoBrowser}
         />
       </Timeline.Item>
     );
@@ -63,6 +67,8 @@ class Creator extends React.Component {
 
     return (
       <div>
+
+        <PhotoBrowser onCancel={this.props.dismissPhotoBrowser}/>
         <h2 className={styles.toolbar}>
           Create new trip!
           <div>
@@ -87,7 +93,9 @@ function mapDispatchToProps(dispatch) {
   const actionCreators = {
     cancel,
     save,
-    start
+    start,
+    openPhotoBrowser,
+    dismissPhotoBrowser
   };
   return bindActionCreators(actionCreators, dispatch);
 }
@@ -102,7 +110,10 @@ Creator.propTypes = {
   newTrip: propTypes.object,
   cancel: propTypes.func.isRequired,
   save: propTypes.func.isRequired,
+  openPhotoBrowser: propTypes.func.isRequired,
+  dismissPhotoBrowser: propTypes.func.isRequired,
   start: propTypes.func.isRequired
+
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Creator);
