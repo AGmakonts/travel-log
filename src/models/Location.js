@@ -61,4 +61,12 @@ export default class Location {
   get latitude(): number {
     return this._latitude;
   }
+
+  get lat(): number {
+    return this.latitude;
+  }
+
+  get lng() : number {
+    return this.longitude;
+  }
 }

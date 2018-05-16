@@ -4,10 +4,7 @@ import fieldValue from './settings/connectedAccounts/flickr/fieldValue';
 import user from './settings/connectedAccounts/flickr/user';
 import visible from './settings/visible';
 import collection from './trips/collection';
-import chapterDates from './trips/new/chapterDates';
-import chapterImages from './trips/new/chapterImages';
-import chapterLocations from './trips/new/chapterLocations';
-import chapterSummaries from './trips/new/chapterSummaries';
+import chapters from './trips/new/chapters';
 import chapterTabs from './trips/new/chapterTabs';
 import albumList from './trips/new/flickr/albumList';
 import currentSetPhotos from './trips/new/flickr/currentSetPhotos';
@@ -36,12 +33,9 @@ export default combineReducers({
         albumList,
         currentSetPhotos
       }),
+      chapters,
       photoBrowser,
-      chapterLocations,
-      chapterDates,
-      chapterTabs,
-      chapterSummaries,
-      chapterImages
+      chapterTabs
     })
   }),
   router: routerReducer

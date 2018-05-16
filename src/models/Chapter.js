@@ -46,7 +46,7 @@ export default class Chapter {
    * @return {Chapter}
    */
   withLocation(location: Location) : Chapter {
-    return new Chapter(this.startDate, this.endDate, this.location, this.summary);
+    return new Chapter(this.startDate, this.endDate, location, this.summary);
   }
 
   /**

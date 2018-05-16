@@ -1,22 +1,23 @@
 import {createClient} from '@google/maps/lib/index';
 import {GOOGLE_API_KEY} from '../../../../config/networkingConfig';
+import Chapter from '../../../../models/Chapter';
+import Location from '../../../../models/Location';
+import updateChapter from '../updateChapter';
 import changeChapterLocation from './changeChapterLocation';
 import receiveAddressDetails from './receiveAddressDetails';
 import requestAddressDetails from './requestAddressDetails';
 
 /**
  *
+ * @param chapter
  * @param lat
  * @param lng
  * @param index
  * @return {Function}
  */
-export default function fetchAddressDetails(lat: number, lng: number, index: number): Function {
+export default function fetchAddressDetails(chapter: Chapter, lat: number, lng: number, index: number): Function {
 
   return dispatch => {
-
-    dispatch(changeChapterLocation(lat, lng, index));
-    dispatch(requestAddressDetails(index));
 
     const client = createClient({key: GOOGLE_API_KEY});
     const request = {
@@ -42,8 +43,7 @@ export default function fetchAddressDetails(lat: number, lng: number, index: num
           }
         });
 
-      dispatch(receiveAddressDetails(country, area, formatted, index));
-
+      dispatch(updateChapter(chapter.withLocation(new Location(country, area, area, lng, lat))), index);
     });
 
   }

@@ -9,7 +9,6 @@ export default class Map extends React.Component {
   render() {
 
     const coordinates = this.props.coordinates;
-    const marker = <Icon className={styles.marker} type="environment" lat={coordinates.lat} lng={coordinates.lng} style={{fontSize: 30}}/>;
 
     return (
       <div className={styles.mapContainer}>
@@ -22,7 +21,7 @@ export default class Map extends React.Component {
           defaultZoom={0}
           onClick={event => this.props.onClick(event.lat, event.lng)}
         >
-          {coordinates.lat && coordinates.lng && marker}
+          {coordinates && coordinates.lat && coordinates.lng && <Icon className={styles.marker} type="environment" lat={coordinates.lat} lng={coordinates.lng} style={{fontSize: 30}}/>}
         </GoogleMapReact>
       </div>
     );

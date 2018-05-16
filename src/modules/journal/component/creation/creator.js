@@ -42,7 +42,7 @@ class Creator extends React.Component {
       <Timeline.Item key={`chapter-${index}`} dot={<Icon type="environment" style={{fontSize: '16px'}}/>}>
         <Chapter
           index={index}
-          restrictedDates={this.props.newTrip.chapterDates[index - 1] ? this.props.newTrip.chapterDates[index - 1].end : null}
+          restrictedDates={this.props.newTrip.chapters[index - 1] ? this.props.newTrip.chapters[index - 1].startDate : null}
           openPhotoBrowser={this.props.openPhotoBrowser}
         />
       </Timeline.Item>
