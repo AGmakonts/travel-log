@@ -2,11 +2,6 @@ import {Card, DatePicker, Icon} from 'antd';
 import moment from 'moment';
 import propTypes from 'prop-types';
 import React, {Fragment} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import fetchAddressDetails from '../../../../actions/trip/create/location/fetchAddressDetails';
-import switchTabInChapter from '../../../../actions/trip/create/switchTabInChapter';
-import updateChapter from '../../../../actions/trip/create/updateChapter';
 import ChapterModel from '../../../../models/Chapter';
 import styles from './chapter.css';
 import BasicInfo from './chapterParts/basicInfo';
@@ -23,13 +18,7 @@ class Chapter extends React.Component {
    * @return {ChapterModel|*}
    */
   get chapterInstance(): ChapterModel {
-    return this.props.newTrip.chapters[this.props.index];
-  }
-
-  get chapter() {
-    return {
-      currentTab: this.props.newTrip.chapterTabs[this.props.index] || 'basic'
-    }
+    return this.props.chapter;
   }
 
   updateChapter = (chapter: ChapterModel) => {
@@ -92,15 +81,15 @@ class Chapter extends React.Component {
       <Fragment>
 
         <Card
-          cover={this.chapter.currentTab === 'basic' ? map : cover}
+          cover={this.props.currentTab === 'basic' ? map : cover}
           actions={actions}
           title={title}
           tabList={tabList}
           onTabChange={event => this.props.switchTabInChapter(event, this.props.index)}
           defaultActiveTabKey='basic'
-          activeTabKey={this.chapter.currentTab}
+          activeTabKey={this.props.currentTab}
         >
-          {contentList[this.chapter.currentTab]}
+          {contentList[this.props.currentTab]}
         </Card>
       </Fragment>
     );
@@ -108,30 +97,17 @@ class Chapter extends React.Component {
 
 }
 
-function mapDispatchToProps(dispatch) {
-  const actionCreators = {
-    fetchAddressDetails,
-    switchTabInChapter,
-    updateChapter
-  };
-  return bindActionCreators(actionCreators, dispatch);
-}
-
-function mapStateToProps(state) {
-  return {
-    newTrip: state.trips.newTrip
-  }
-}
 
 Chapter.propTypes = {
+  chapter: propTypes.instanceOf(ChapterModel),
   index: propTypes.number,
-  newTrip: propTypes.object,
   restrictedDates: propTypes.object,
   fetchAddressDetails: propTypes.func.isRequired,
   updateChapter: propTypes.func.isRequired,
   switchTabInChapter: propTypes.func.isRequired,
-  openPhotoBrowser: propTypes.func
+  openPhotoBrowser: propTypes.func,
+  currentTab: propTypes.string
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Chapter);
+export default Chapter;

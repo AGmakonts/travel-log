@@ -5,9 +5,12 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import cancel from '../../../../actions/trip/create/cancel';
 import dismissPhotoBrowser from '../../../../actions/trip/create/dismissPhotoBrowser';
+import fetchAddressDetails from '../../../../actions/trip/create/location/fetchAddressDetails';
 import openPhotoBrowser from '../../../../actions/trip/create/openPhotoBrowser';
 import save from '../../../../actions/trip/create/save';
 import start from '../../../../actions/trip/create/start';
+import switchTabInChapter from '../../../../actions/trip/create/switchTabInChapter';
+import updateChapter from '../../../../actions/trip/create/updateChapter';
 import Chapter from './chapter';
 import PhotoBrowser from './chapterParts/photoBrowser';
 import styles from './creator.css';
@@ -44,6 +47,11 @@ class Creator extends React.Component {
           index={index}
           restrictedDates={this.props.newTrip.chapters[index - 1] ? this.props.newTrip.chapters[index - 1].startDate : null}
           openPhotoBrowser={this.props.openPhotoBrowser}
+          switchTabInChapter={this.props.switchTabInChapter}
+          chapter={this.props.newTrip.chapters[index]}
+          fetchAddressDetails={this.props.fetchAddressDetails}
+          currentTab={this.props.newTrip.chapterTabs[index]}
+          updateChapter={this.props.updateChapter}
         />
       </Timeline.Item>
     );
@@ -95,7 +103,10 @@ function mapDispatchToProps(dispatch) {
     save,
     start,
     openPhotoBrowser,
-    dismissPhotoBrowser
+    dismissPhotoBrowser,
+    fetchAddressDetails,
+    switchTabInChapter,
+    updateChapter
   };
   return bindActionCreators(actionCreators, dispatch);
 }
@@ -112,6 +123,9 @@ Creator.propTypes = {
   save: propTypes.func.isRequired,
   openPhotoBrowser: propTypes.func.isRequired,
   dismissPhotoBrowser: propTypes.func.isRequired,
+  fetchAddressDetails: propTypes.func.isRequired,
+  updateChapter: propTypes.func.isRequired,
+  switchTabInChapter: propTypes.func.isRequired,
   start: propTypes.func.isRequired
 
 };
