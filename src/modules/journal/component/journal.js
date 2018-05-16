@@ -4,6 +4,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Route, withRouter} from 'react-router';
 import {bindActionCreators} from 'redux';
+import fetchAccountsSettings from '../../../actions/settings/connectedAccounts/fetchAccountsSettings';
 import toggle from '../../../actions/settings/toggle';
 import addTrip from '../../../actions/trip/add';
 import selectTrip from '../../../actions/trip/select';
@@ -16,6 +17,12 @@ import TripList from './tripList';
 const {Header, Content, Sider} = Layout;
 
 class Journal extends React.Component {
+
+
+  componentDidMount() {
+    this.props.fetchAccountsSettings(this.props.currentUser.uid);
+  }
+
   /**
    *
    * @return {*}
@@ -91,7 +98,8 @@ function mapDispatchToProps(dispatch) {
   const actionCreators = {
     addTrip,
     selectTrip,
-    toggleSettings: toggle
+    toggleSettings: toggle,
+    fetchAccountsSettings
   };
   return bindActionCreators(actionCreators, dispatch);
 }
@@ -107,6 +115,7 @@ function mapStateToProps(state) {
 
 Journal.propTypes = {
   selectTrip: propTypes.func.isRequired,
+  fetchAccountsSettings: propTypes.func.isRequired,
   tripList: propTypes.array.isRequired,
   addTrip: propTypes.func.isRequired,
   currentUser: propTypes.object.isRequired,

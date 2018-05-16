@@ -1,7 +1,6 @@
-import {LOAD} from 'redux-storage';
 import {FLICKR_USERNAME_ENTERED} from '../../../../actions/settings/connectedAccounts/actionTypes';
+import {SETTINGS_RECEIVE} from '../../../../actions/settings/connectedAccounts/receiveAccountSettings';
 import {apiAction} from '../../../../middleware/api/apiMiddleware';
-import SettingsReader from '../../../../middleware/api/firebase/SettingsReader';
 import UserIdRetrieval from '../../../../middleware/api/flickr/UserIdRetrieval';
 import UserInfoRetrieval from '../../../../middleware/api/flickr/UserInfoRetrieval';
 
@@ -23,14 +22,10 @@ export default function user(state = null, action) {
       return action.payload;
     }
 
-    case apiAction(LOAD, SettingsReader).SUCCESS: {
+    case SETTINGS_RECEIVE: {
       return {
-        id: action.payload.accounts.flickr
+        id: action.settings.flickr
       };
-    }
-
-    case apiAction(apiAction(LOAD, SettingsReader).SUCCESS, UserInfoRetrieval).SUCCESS: {
-      return action.payload;
     }
 
     default:

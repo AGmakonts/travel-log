@@ -1,4 +1,4 @@
-import {TAB_CHANGED} from '../../../actions/trip/create/actionTypes';
+import {CHAPTER_CREATION_STARTED, TAB_CHANGED} from '../../../actions/trip/create/actionTypes';
 
 export default function chapterTabs(state = [], action) {
 
@@ -8,6 +8,20 @@ export default function chapterTabs(state = [], action) {
       const newState = [...state];
       newState.splice(payload.index, 1, payload.to);
       return newState;
+    }
+
+    case CHAPTER_CREATION_STARTED: {
+      const chapterState = [...state];
+
+      if (chapterState[payload]) {
+        const previousEntries = chapterState.slice(0, payload);
+        const furtherEntries = chapterState.slice(payload);
+        const composedNewState = [...previousEntries, '', ...furtherEntries];
+        return composedNewState;
+      }
+
+      chapterState[payload] = '';
+      return chapterState;
     }
 
     default:

@@ -3,44 +3,55 @@ import {
   CHAPTER_LOCATION_CHANGED,
   TRIP_CREATION_CANCELED
 } from '../../../actions/trip/create/actionTypes';
-import {apiAction} from '../../../middleware/api/apiMiddleware';
-import ReverseGeocoder from '../../../middleware/api/google/ReverseGeocoder';
+import {RECEIVE_ADDRESS_DETAILS} from '../../../actions/trip/create/location/receiveAddressDetails';
+import {REQUEST_ADDRESS_DETAILS} from '../../../actions/trip/create/location/requestAddressDetails';
 
 export default function chapterLocations(state = [], action) {
 
   const payload = action.payload;
+  const enhancedState = [...state];
+
+
   switch (action.type) {
     case CHAPTER_LOCATION_CHANGED: {
       const {lat, lng} = payload;
-      const newState = [...state];
 
-      newState.splice(payload.index, 1, {lat, lng});
-      return newState;
+      enhancedState.splice(payload.index, 1, {...state[payload.index],lat, lng});
+      return enhancedState;
     }
 
     case CHAPTER_CREATION_STARTED: {
-      const chapterState = [...state];
-      if (chapterState[payload]) {
-        const previousEntries = chapterState.slice(0, payload);
-        const furtherEntries = chapterState.slice(payload);
-        const composedNewState = [...previousEntries, {}, ...furtherEntries];
-        return composedNewState;
+      if (enhancedState[payload]) {
+        const previousEntries = enhancedState.slice(0, payload);
+        const furtherEntries = enhancedState.slice(payload);
+        return [...previousEntries, {loaded: true}, ...furtherEntries];
       }
-      chapterState[payload] = {};
-      return chapterState;
+      enhancedState[payload] = {loaded: true};
+      return enhancedState;
     }
 
-    case apiAction(CHAPTER_LOCATION_CHANGED, ReverseGeocoder).SUCCESS: {
+    case REQUEST_ADDRESS_DETAILS: {
 
-      const index = action.origin.payload.index;
-      const originLat = action.origin.payload.lat;
-      const originLng = action.origin.payload.lng;
-      const country = payload.data.country;
-      const city = payload.data.city;
-      const formatted = payload.data.formatted;
-      const enhancedState = [...state];
+      const stateElement = {
+        ...state[action.index],
+        loaded: false
+      };
 
-      enhancedState.splice(index, 1, {lat: originLat, lng: originLng, country, city, formatted});
+      enhancedState.splice(action.index, 1, stateElement);
+      return enhancedState;
+    }
+
+    case RECEIVE_ADDRESS_DETAILS: {
+
+      const stateElement = {
+        ...state[action.index],
+        loaded: true,
+        country: action.country,
+        city: action.area,
+        formatted: action.formatted
+      };
+
+      enhancedState.splice(action.index, 1, stateElement);
       return enhancedState;
     }
 

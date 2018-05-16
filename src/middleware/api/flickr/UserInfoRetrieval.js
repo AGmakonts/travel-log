@@ -1,8 +1,6 @@
 import Flickr from 'flickr-sdk';
-import {LOAD} from 'redux-storage';
 import {FLICKR_USERNAME_ENTERED} from '../../../actions/settings/connectedAccounts/actionTypes';
 import {apiAction} from '../apiMiddleware';
-import SettingsReader from '../firebase/SettingsReader';
 import Service from '../Service';
 import UserIdRetrieval from './UserIdRetrieval';
 
@@ -20,11 +18,10 @@ export default class UserInfoRetrieval extends Service {
   get trigger(): String {
     return [
       apiAction(FLICKR_USERNAME_ENTERED, UserIdRetrieval).SUCCESS,
-      apiAction(LOAD, SettingsReader).SUCCESS
     ];
   }
 
-  handle(action): Promise {
+  handle(action, state): Promise {
 
     return this._flickr.people.getInfo({
       user_id: action.payload.accounts ? action.payload.accounts.flickr : action.payload

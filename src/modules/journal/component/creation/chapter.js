@@ -5,11 +5,13 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import changeChapterDates from '../../../../actions/trip/create/changeChapterDates';
-import changeChapterLocation from '../../../../actions/trip/create/changeChapterLocation';
 import changeChapterSummary from '../../../../actions/trip/create/changeChapterSummary';
+import fetchAlbums from '../../../../actions/trip/create/flickr/albums/fetchAlbums';
+import fetchAddressDetails from '../../../../actions/trip/create/location/fetchAddressDetails';
 import switchTabInChapter from '../../../../actions/trip/create/switchTabInChapter';
 import styles from './chapter.css';
 import BasicInfo from './chapterParts/basicInfo';
+import CoverBrowser from './chapterParts/coverBrowser';
 import Map from './chapterParts/map';
 
 const {RangePicker} = DatePicker;
@@ -31,6 +33,7 @@ class Chapter extends React.Component {
    */
   componentDidMount() {
     this.props.changeChapterDates(this.chapter.dates.start, this.chapter.dates.end, this.props.index);
+    this.props.fetchAlbums(this.props.flickrUser);
   }
 
   /**
@@ -66,8 +69,12 @@ class Chapter extends React.Component {
 
     const actions = [<Icon key={1} type="save"/>];
     const map = (
-      <Map onClick={(lat, lng) => this.props.changeChapterLocation(lat, lng, this.props.index)}
+      <Map onClick={(lat, lng) => this.props.fetchAddressDetails(lat, lng, this.props.index)}
         coordinates={this.chapter.locations}/>
+    );
+
+    const coverBrowser = (
+      <CoverBrowser/>
     );
 
     const title = (
@@ -80,7 +87,7 @@ class Chapter extends React.Component {
 
     return (
       <Card
-        cover={map}
+        cover={this.chapter.currentTab === 'basic' ? map : coverBrowser}
         actions={actions}
         title={title}
         tabList={tabList}
@@ -97,17 +104,19 @@ class Chapter extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   const actionCreators = {
-    changeChapterLocation,
+    fetchAddressDetails,
     changeChapterDates,
     changeChapterSummary,
-    switchTabInChapter
+    switchTabInChapter,
+    fetchAlbums
   };
   return bindActionCreators(actionCreators, dispatch);
 }
 
 function mapStateToProps(state) {
   return {
-    newTrip: state.trips.newTrip
+    newTrip: state.trips.newTrip,
+    flickrUser: state.settings.accounts.flickr.user.id
   }
 }
 
@@ -115,10 +124,12 @@ Chapter.propTypes = {
   index: propTypes.number,
   newTrip: propTypes.object,
   restrictedDates: propTypes.object,
-  changeChapterLocation: propTypes.func.isRequired,
+  fetchAddressDetails: propTypes.func.isRequired,
   changeChapterDates: propTypes.func.isRequired,
   changeChapterSummary: propTypes.func.isRequired,
-  switchTabInChapter: propTypes.func.isRequired
+  switchTabInChapter: propTypes.func.isRequired,
+  fetchAlbums: propTypes.func.isRequired,
+  flickrUser: propTypes.string.isRequired
 };
 
 

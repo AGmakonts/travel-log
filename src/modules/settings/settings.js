@@ -18,13 +18,13 @@ class Settings extends React.Component {
           <Collapse bordered={false} defaultActiveKey={['1']}>
             <Panel header={'Flickr'} key="1">
               <Card title={
-                <Input
+                (this.props.flickrUser === null || !this.props.flickrUser.name) && <Input
                   onChange={(event) => this.props.changeFlickrUsernameField(event.target.value)}
                   value={this.props.flickrFieldValue}
                   placeholder='Flickr username'
                   onBlur={() => this.props.confirmFlickrUsername(this.props.flickrFieldValue)}
                 />}>
-                {this.props.flickrUser && <Card.Meta
+                {this.props.flickrUser && this.props.flickrUser.name && <Card.Meta
                   avatar={<Avatar src={this.props.flickrUser.avatarUrl}/>}
                   title={this.props.flickrUser.name}
                   description={this.props.flickrUser.description}

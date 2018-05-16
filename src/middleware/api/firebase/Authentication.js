@@ -9,7 +9,7 @@ export default class Authentication extends Service {
     return LOGIN
   }
 
-  handle(action) {
+  handle(action, state) {
 
     let provider;
 

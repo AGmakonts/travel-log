@@ -17,7 +17,7 @@ export default class UserIdRetrieval extends Service {
     return FLICKR_USERNAME_ENTERED
   }
 
-  handle(action): Promise {
+  handle(action, state): Promise {
 
     return this._flickr.people
       .findByUsername({

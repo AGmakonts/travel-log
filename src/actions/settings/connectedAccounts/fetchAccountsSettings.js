@@ -1,25 +1,22 @@
 import firebase from 'firebase/index';
-import {LOAD} from 'redux-storage';
-import Service from '../Service';
+import receiveAccountSettings from './receiveAccountSettings';
 
-export default class SettingsReader extends Service {
+export default function fetchAccountsSettings(user_id: String) {
 
-  get trigger() {
-    return LOAD;
-  }
+  return dispatch => {
 
-  handle(action) {
     const settings = {timestampsInSnapshots: true};
     firebase.firestore().settings(settings);
 
     const settingsRef = firebase.firestore().collection('settings');
-    const userSettings = settingsRef.doc(action.payload.currentUser.uid);
+
+    const userSettings = settingsRef.doc(user_id);
 
     return userSettings.get().then((doc) => {
       if (!doc.exists) {
         throw new Error('no settings present');
       }
-      return doc.data();
+      dispatch(receiveAccountSettings(doc.data().accounts));
     });
   }
 }
