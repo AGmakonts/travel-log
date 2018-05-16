@@ -3,9 +3,6 @@ import {GOOGLE_API_KEY} from '../../../../config/networkingConfig';
 import Chapter from '../../../../models/Chapter';
 import Location from '../../../../models/Location';
 import updateChapter from '../updateChapter';
-import changeChapterLocation from './changeChapterLocation';
-import receiveAddressDetails from './receiveAddressDetails';
-import requestAddressDetails from './requestAddressDetails';
 
 /**
  *
@@ -43,7 +40,7 @@ export default function fetchAddressDetails(chapter: Chapter, lat: number, lng: 
           }
         });
 
-      dispatch(updateChapter(chapter.withLocation(new Location(country, area, area, lng, lat))), index);
+      dispatch(updateChapter(chapter.withLocation(new Location(country, area, area, formatted, lng, lat)), index));
     });
 
   }

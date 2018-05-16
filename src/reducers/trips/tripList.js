@@ -12,15 +12,10 @@ export default function tripList(state = [], action) {
   const payload = action.payload;
   switch (action.type) {
     case TRIP_SAVED: {
-      const chapters: Chapter[] = payload.chapterLocations.map((locationData, index) => {
-        const location = new Location(locationData.country, locationData.city, locationData.city, locationData.lng, locationData.lat);
-        const startDate = new Date(payload.chapterDates[index].start);
-        const endDate = new Date(payload.chapterDates[index].end);
-        return new Chapter(startDate, endDate, location, payload.chapterSummaries[index]);
-      });
-      const trip: Trip = new Trip(new Identifier(), chapters, []);
 
-      const newState = [state];
+
+      const trip: Trip = new Trip(new Identifier(), payload.chapters, []);
+
       return [...state, trip];
     }
     case ADDED:

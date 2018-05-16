@@ -32,13 +32,6 @@ class Chapter extends React.Component {
     }
   }
 
-  /**
-   *
-   */
-  componentDidMount() {
-    this.updateChapter(this.chapterInstance.withDates(new Date, new Date));
-  }
-
   updateChapter = (chapter: ChapterModel) => {
     this.props.updateChapter(chapter, this.props.index);
   };
@@ -58,7 +51,7 @@ class Chapter extends React.Component {
    */
   render() {
 
-    const coordinates = this.chapter.locations;
+    const coordinates = this.chapterInstance.location;
 
     const tabList = [{
       key: 'basic',

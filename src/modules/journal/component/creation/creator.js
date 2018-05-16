@@ -23,9 +23,9 @@ class Creator extends React.Component {
   }
 
   renderChapters() {
-    const chapterLocations = this.props.newTrip.chapterLocations;
-    return chapterLocations
-      .map((location, index) => {
+    const chapters = this.props.newTrip.chapters;
+    return chapters
+      .map((chapter, index) => {
         return this._renderChapterDividerPair(index);
       })
       .flatMap(element => element);

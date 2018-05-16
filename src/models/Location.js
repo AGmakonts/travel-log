@@ -3,6 +3,7 @@ export default class Location {
   _country: String;
   _area: String;
   _city: String;
+  _formatted: String;
   _longitude: number;
   _latitude: number;
 
@@ -11,15 +12,22 @@ export default class Location {
    * @param country
    * @param area
    * @param city
+   * @param formatted
    * @param longitude
    * @param latitude
    */
-  constructor(country: String, area: String, city: String, longitude: number = null, latitude: number = null) {
+  constructor(country: String, area: String, city: String, formatted: String = '', longitude: number = null, latitude: number = null) {
     this._country = country;
     this._area = area;
     this._city = city;
+    this._formatted = formatted;
     this._longitude = longitude;
     this._latitude = latitude;
+  }
+
+
+  get formatted(): String {
+    return this._formatted;
   }
 
   /**

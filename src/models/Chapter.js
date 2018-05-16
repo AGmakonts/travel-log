@@ -7,7 +7,7 @@ export default class Chapter {
   _location: Location;
   _summary: String;
 
-  constructor(startDate: Date, endDate: Date, location: Location, summary: String) {
+  constructor(startDate: Date = new Date(), endDate: Date = new Date(), location: Location = new Location(), summary: String = '') {
     this._startDate = startDate;
     this._endDate = endDate;
     this._location = location;
