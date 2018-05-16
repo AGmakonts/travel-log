@@ -1,3 +1,4 @@
+import {INVALIDATE_USER} from '../../../../actions/settings/connectedAccounts/flickr/invalidateUser';
 import {RECEIVE_FLICKR_USER_ID} from '../../../../actions/settings/connectedAccounts/flickr/receiveUserId';
 import {RECEIVE_FLICKR_USER_INFO} from '../../../../actions/settings/connectedAccounts/flickr/receiveUserInfo';
 import {SETTINGS_RECEIVE} from '../../../../actions/settings/connectedAccounts/receiveAccountSettings';
@@ -5,6 +6,10 @@ import {SETTINGS_RECEIVE} from '../../../../actions/settings/connectedAccounts/r
 export default function user(state = null, action) {
 
   switch (action.type) {
+
+    case INVALIDATE_USER: {
+      return null;
+    }
 
     case RECEIVE_FLICKR_USER_ID: {
       return {

@@ -1,4 +1,4 @@
-import {Avatar, Card, Collapse, Input, Tabs} from 'antd';
+import {Avatar, Card, Collapse, Icon, Input, Tabs} from 'antd';
 import propTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
@@ -6,6 +6,7 @@ import {bindActionCreators} from 'redux';
 import changeFlickrUsernameField from '../../actions/settings/connectedAccounts/changeFlickrUsernameField';
 import fetchUser from '../../actions/settings/connectedAccounts/flickr/fetchUser';
 import fetchUserInfo from '../../actions/settings/connectedAccounts/flickr/fetchUserInfo';
+import invalidateUser from '../../actions/settings/connectedAccounts/flickr/invalidateUser';
 
 const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
@@ -16,26 +17,39 @@ class Settings extends React.Component {
     this.props.flickrUser && this.props.fetchUserInfo(this.props.flickrUser.id);
   }
 
+  componentDidUpdate(prevProps) {
+    if (!prevProps.flickrUser && this.props.flickrUser || this.props.flickrUser && this.props.flickrUser.id !== prevProps.flickrUser.id) {
+      this.props.fetchUserInfo(this.props.flickrUser.id);
+    }
+  }
+
   render() {
+    const input = (
+      <Input
+        onChange={(event) => this.props.changeFlickrUsernameField(event.target.value)}
+        value={this.props.flickrFieldValue}
+        placeholder='Flickr username'
+        onBlur={() => this.props.fetchUser(this.props.flickrFieldValue)}
+      />);
+
+
+    const userCard = (
+      <Card
+        actions={[<Icon onClick={this.props.invalidateUser} key='delete' type="close" />]}
+      >
+        {this.props.flickrUser && this.props.flickrUser.name && <Card.Meta
+          avatar={<Avatar src={this.props.flickrUser.avatarUrl}/>}
+          title={this.props.flickrUser.name}
+          description={this.props.flickrUser.description}
+        />}
+      </Card>
+    );
     return (
       <Tabs defaultActiveKey="1">
         <TabPane tab="Connected accounts" key="1">
           <Collapse bordered={false} defaultActiveKey={['1']}>
             <Panel header={'Flickr'} key="1">
-              <Card title={
-                /*(this.props.flickrUser === null || !this.props.flickrUser.name) &&*/ <Input
-                  onChange={(event) => this.props.changeFlickrUsernameField(event.target.value)}
-                  value={this.props.flickrFieldValue}
-                  placeholder='Flickr username'
-                  onBlur={() => this.props.fetchUser(this.props.flickrFieldValue)}
-                />}>
-                {this.props.flickrUser && this.props.flickrUser.name && <Card.Meta
-                  avatar={<Avatar src={this.props.flickrUser.avatarUrl}/>}
-                  title={this.props.flickrUser.name}
-                  description={this.props.flickrUser.description}
-                />}
-
-              </Card>
+              {this.props.flickrUser === null || !this.props.flickrUser.name ? input : userCard}
             </Panel>
             <Panel header="Google" key="2">
               ok
@@ -58,7 +72,8 @@ function mapDispatchToProps(dispatch) {
   const actionCreators = {
     changeFlickrUsernameField,
     fetchUser,
-    fetchUserInfo
+    fetchUserInfo,
+    invalidateUser
   };
 
   return bindActionCreators(actionCreators, dispatch);
@@ -76,7 +91,8 @@ Settings.propTypes = {
   fetchUser: propTypes.func.isRequired,
   flickrFieldValue: propTypes.string.isRequired,
   flickrUser: propTypes.object,
-  fetchUserInfo: propTypes.func.isRequired
+  fetchUserInfo: propTypes.func.isRequired,
+  invalidateUser: propTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings)
