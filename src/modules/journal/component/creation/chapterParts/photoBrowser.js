@@ -4,6 +4,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import fetchAlbums from '../../../../../actions/trip/create/flickr/albums/fetchAlbums';
+import selectAlbum from '../../../../../actions/trip/create/flickr/albums/selectAlbum';
+import selectPhotoForChapter from '../../../../../actions/trip/create/selectPhotoForChapter';
 import styles from './photoBrowser.css';
 
 class PhotoBrowser extends React.Component {
@@ -17,9 +19,22 @@ class PhotoBrowser extends React.Component {
 
       return (
         <div className={styles.card} key={album.id}>
-          <Card cover={<img src={album.cover}/>}>
+          <Card cover={<img src={album.cover}/>}
+            onClick={() => this.props.selectAlbum(album.id, this.props.flickrUser)}>
             <Card.Meta title={album.title} description={album.description}/>
           </Card>
+        </div>
+      );
+
+    });
+  }
+
+  renderPhotos() {
+    return this.props.photos.map(photo => {
+
+      return (
+        <div className={styles.photo} key={photo.url} onClick={() => this.props.selectPhotoForChapter(this.props.chapter, this.props.target, photo.url)}>
+          <img src={photo.thumbnail}/>
         </div>
       );
 
@@ -36,7 +51,7 @@ class PhotoBrowser extends React.Component {
         onCancel={this.props.onCancel}
       >
         <div className={styles.container}>
-          {this.renderCards()}
+          {!this.props.selectedSet ? this.renderCards() : this.renderPhotos()}
         </div>
       </Modal>
 
@@ -47,17 +62,22 @@ class PhotoBrowser extends React.Component {
 }
 
 PhotoBrowser.defaultProps = {
-  albumList: []
+  albumList: [],
+  photos: []
 };
 
 PhotoBrowser.propTypes = {
   albumList: propTypes.array,
+  photos: propTypes.array,
   fetchAlbums: propTypes.func.isRequired,
+  selectAlbum: propTypes.func.isRequired,
   flickrUser: propTypes.string.isRequired,
   visible: propTypes.bool,
   onCancel: propTypes.func,
-  chapter: propTypes.number
-
+  chapter: propTypes.number,
+  selectedSet: propTypes.number,
+  target: propTypes.any,
+  selectPhotoForChapter: propTypes.func
 };
 
 function mapStateToProps(state) {
@@ -65,14 +85,19 @@ function mapStateToProps(state) {
     albumList: state.trips.newTrip.flickr.albumList,
     flickrUser: state.settings.accounts.flickr.user.id,
     chapter: state.trips.newTrip.photoBrowser.forChapter,
-    visible: state.trips.newTrip.photoBrowser.visible
+    visible: state.trips.newTrip.photoBrowser.visible,
+    selectedSet: state.trips.newTrip.photoBrowser.selectedSet,
+    photos: state.trips.newTrip.flickr.currentSetPhotos,
+    target: state.trips.newTrip.photoBrowser.targetSection
 
   }
 }
 
 function mapDispatchToProps(dispatch) {
   const actionCreators = {
-    fetchAlbums
+    fetchAlbums,
+    selectAlbum,
+    selectPhotoForChapter
   };
 
   return bindActionCreators(actionCreators, dispatch);

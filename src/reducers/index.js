@@ -5,10 +5,12 @@ import user from './settings/connectedAccounts/flickr/user';
 import visible from './settings/visible';
 import collection from './trips/collection';
 import chapterDates from './trips/new/chapterDates';
+import chapterImages from './trips/new/chapterImages';
 import chapterLocations from './trips/new/chapterLocations';
 import chapterSummaries from './trips/new/chapterSummaries';
 import chapterTabs from './trips/new/chapterTabs';
 import albumList from './trips/new/flickr/albumList';
+import currentSetPhotos from './trips/new/flickr/currentSetPhotos';
 import photoBrowser from './trips/new/photoBrowser';
 import selected from './trips/selected';
 import tripList from './trips/tripList';
@@ -31,13 +33,15 @@ export default combineReducers({
     selected,
     newTrip: combineReducers({
       flickr: combineReducers({
-        albumList
+        albumList,
+        currentSetPhotos
       }),
       photoBrowser,
       chapterLocations,
       chapterDates,
       chapterTabs,
-      chapterSummaries
+      chapterSummaries,
+      chapterImages
     })
   }),
   router: routerReducer

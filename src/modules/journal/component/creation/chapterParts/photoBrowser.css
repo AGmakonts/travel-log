@@ -1,7 +1,14 @@
-.card {
+.card, .photo {
     flex: 0 0 20%;
-    padding: 10px;
     box-sizing: border-box;
+}
+
+.card {
+    padding: 10px;
+}
+
+.photo {
+    padding: 2px;
 }
 
 .container {
