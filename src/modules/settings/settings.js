@@ -4,12 +4,17 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import changeFlickrUsernameField from '../../actions/settings/connectedAccounts/changeFlickrUsernameField';
-import confirmFlickrUsername from '../../actions/settings/connectedAccounts/confirmFlickrUsername';
+import fetchUser from '../../actions/settings/connectedAccounts/flickr/fetchUser';
+import fetchUserInfo from '../../actions/settings/connectedAccounts/flickr/fetchUserInfo';
 
 const TabPane = Tabs.TabPane;
 const Panel = Collapse.Panel;
 
 class Settings extends React.Component {
+
+  componentDidMount() {
+    this.props.flickrUser && this.props.fetchUserInfo(this.props.flickrUser.id);
+  }
 
   render() {
     return (
@@ -18,11 +23,11 @@ class Settings extends React.Component {
           <Collapse bordered={false} defaultActiveKey={['1']}>
             <Panel header={'Flickr'} key="1">
               <Card title={
-                (this.props.flickrUser === null || !this.props.flickrUser.name) && <Input
+                /*(this.props.flickrUser === null || !this.props.flickrUser.name) &&*/ <Input
                   onChange={(event) => this.props.changeFlickrUsernameField(event.target.value)}
                   value={this.props.flickrFieldValue}
                   placeholder='Flickr username'
-                  onBlur={() => this.props.confirmFlickrUsername(this.props.flickrFieldValue)}
+                  onBlur={() => this.props.fetchUser(this.props.flickrFieldValue)}
                 />}>
                 {this.props.flickrUser && this.props.flickrUser.name && <Card.Meta
                   avatar={<Avatar src={this.props.flickrUser.avatarUrl}/>}
@@ -52,7 +57,8 @@ class Settings extends React.Component {
 function mapDispatchToProps(dispatch) {
   const actionCreators = {
     changeFlickrUsernameField,
-    confirmFlickrUsername
+    fetchUser,
+    fetchUserInfo
   };
 
   return bindActionCreators(actionCreators, dispatch);
@@ -67,9 +73,10 @@ function mapStateToProps(state) {
 
 Settings.propTypes = {
   changeFlickrUsernameField: propTypes.func.isRequired,
-  confirmFlickrUsername: propTypes.func.isRequired,
+  fetchUser: propTypes.func.isRequired,
   flickrFieldValue: propTypes.string.isRequired,
-  flickrUser: propTypes.object
+  flickrUser: propTypes.object,
+  fetchUserInfo: propTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings)

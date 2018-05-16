@@ -1,6 +1,8 @@
 import firebase from 'firebase/index';
 import receiveAccountSettings from './receiveAccountSettings';
 
+require('firebase/firestore');
+
 export default function fetchAccountsSettings(user_id: String) {
 
   return dispatch => {

@@ -8,8 +8,6 @@ import createEngine from 'redux-storage-engine-localstorage';
 import thunk from 'redux-thunk';
 import apiMiddleware from '../middleware/api/apiMiddleware';
 import Authentication from '../middleware/api/firebase/Authentication';
-import UserIdRetrieval from '../middleware/api/flickr/UserIdRetrieval';
-import UserInfoRetrieval from '../middleware/api/flickr/UserInfoRetrieval';
 import rootReducer from '../reducers/index';
 
 
@@ -17,9 +15,7 @@ const engine = createEngine('tripList-log-state');
 const history = createHistory();
 const apiServices = [
   new Authentication(),
-  new UserIdRetrieval('5ef695553e6a392c843cd544d4738967'),
-  new UserInfoRetrieval('5ef695553e6a392c843cd544d4738967'),
-];
+]
 
 const middleware = [
   thunk,

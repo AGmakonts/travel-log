@@ -1,25 +1,19 @@
-import {FLICKR_USERNAME_ENTERED} from '../../../../actions/settings/connectedAccounts/actionTypes';
+import {RECEIVE_FLICKR_USER_ID} from '../../../../actions/settings/connectedAccounts/flickr/receiveUserId';
+import {RECEIVE_FLICKR_USER_INFO} from '../../../../actions/settings/connectedAccounts/flickr/receiveUserInfo';
 import {SETTINGS_RECEIVE} from '../../../../actions/settings/connectedAccounts/receiveAccountSettings';
-import {apiAction} from '../../../../middleware/api/apiMiddleware';
-import UserIdRetrieval from '../../../../middleware/api/flickr/UserIdRetrieval';
-import UserInfoRetrieval from '../../../../middleware/api/flickr/UserInfoRetrieval';
 
 export default function user(state = null, action) {
 
   switch (action.type) {
 
-    case FLICKR_USERNAME_ENTERED: {
-      return state;
-    }
-
-    case apiAction(FLICKR_USERNAME_ENTERED, UserIdRetrieval).SUCCESS: {
+    case RECEIVE_FLICKR_USER_ID: {
       return {
-        id: action.payload
-      }
+        id: action.id
+      };
     }
 
-    case apiAction(apiAction(FLICKR_USERNAME_ENTERED, UserIdRetrieval).SUCCESS, UserInfoRetrieval).SUCCESS: {
-      return action.payload;
+    case RECEIVE_FLICKR_USER_INFO: {
+      return action.userInfo;
     }
 
     case SETTINGS_RECEIVE: {
