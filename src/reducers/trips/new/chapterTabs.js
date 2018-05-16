@@ -16,11 +16,11 @@ export default function chapterTabs(state = [], action) {
       if (chapterState[payload]) {
         const previousEntries = chapterState.slice(0, payload);
         const furtherEntries = chapterState.slice(payload);
-        const composedNewState = [...previousEntries, '', ...furtherEntries];
+        const composedNewState = [...previousEntries, 'basic', ...furtherEntries];
         return composedNewState;
       }
 
-      chapterState[payload] = '';
+      chapterState[payload] = 'basic';
       return chapterState;
     }
 

@@ -12,6 +12,10 @@ export default function fetchAlbums(user_id: String) {
 
   return dispatch => {
 
+    if (user_id === null) {
+      return;
+    }
+
     dispatch(requestAlbumList());
 
     const flickr = new Flickr(FLICKR_API_KEY);

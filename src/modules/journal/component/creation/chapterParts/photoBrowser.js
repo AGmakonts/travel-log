@@ -33,7 +33,8 @@ class PhotoBrowser extends React.Component {
     return this.props.photos.map(photo => {
 
       return (
-        <div className={styles.photo} key={photo.url} onClick={() => this.props.selectPhotoForChapter(this.props.chapter, this.props.target, photo.url)}>
+        <div className={styles.photo} key={photo.url}
+          onClick={() => this.props.selectPhotoForChapter(this.props.chapter, this.props.target, photo.url)}>
           <img src={photo.thumbnail}/>
         </div>
       );
@@ -83,7 +84,7 @@ PhotoBrowser.propTypes = {
 function mapStateToProps(state) {
   return {
     albumList: state.trips.newTrip.flickr.albumList,
-    flickrUser: state.settings.accounts.flickr.user.id,
+    flickrUser: state.settings.accounts.flickr.user ? state.settings.accounts.flickr.user.id : null,
     chapter: state.trips.newTrip.photoBrowser.forChapter,
     visible: state.trips.newTrip.photoBrowser.visible,
     selectedSet: state.trips.newTrip.photoBrowser.selectedSet,

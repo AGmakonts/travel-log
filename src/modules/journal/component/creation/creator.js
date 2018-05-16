@@ -45,13 +45,13 @@ class Creator extends React.Component {
       <Timeline.Item key={`chapter-${index}`} dot={<Icon type="environment" style={{fontSize: '16px'}}/>}>
         <Chapter
           index={index}
-          restrictedDates={this.props.newTrip.chapters[index - 1] ? this.props.newTrip.chapters[index - 1].startDate : null}
-          openPhotoBrowser={this.props.openPhotoBrowser}
-          switchTabInChapter={this.props.switchTabInChapter}
+          restrictedDates={this._calculateRestrictedDatesForChapter(index)}
+          openPhotoBrowser={(intent) => this.props.openPhotoBrowser(intent, index)}
+          switchTabInChapter={(to) => this.props.switchTabInChapter(to, index)}
+          fetchAddressDetails={(chapter, lat, lng) => this.props.fetchAddressDetails(chapter, lat, lng, index)}
           chapter={this.props.newTrip.chapters[index]}
-          fetchAddressDetails={this.props.fetchAddressDetails}
           currentTab={this.props.newTrip.chapterTabs[index]}
-          updateChapter={this.props.updateChapter}
+          updateChapter={(chapter) => this.props.updateChapter(chapter, index)}
         />
       </Timeline.Item>
     );
@@ -69,6 +69,16 @@ class Creator extends React.Component {
 
   /**
    *
+   * @param index
+   * @return {*}
+   * @private
+   */
+  _calculateRestrictedDatesForChapter(index) {
+    return this.props.newTrip.chapters[index - 1] ? this.props.newTrip.chapters[index - 1].startDate : null;
+  }
+
+  /**
+   *
    * @return {*}
    */
   render() {
@@ -76,7 +86,7 @@ class Creator extends React.Component {
     return (
       <div>
 
-        <PhotoBrowser onCancel={this.props.dismissPhotoBrowser}/>
+        {this.props.newTrip.photoBrowser.visible && <PhotoBrowser onCancel={this.props.dismissPhotoBrowser}/>}
         <h2 className={styles.toolbar}>
           Create new trip!
           <div>

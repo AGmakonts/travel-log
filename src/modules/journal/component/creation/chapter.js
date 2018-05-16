@@ -17,12 +17,12 @@ class Chapter extends React.Component {
    *
    * @return {ChapterModel|*}
    */
-  get chapterInstance(): ChapterModel {
+  get model(): ChapterModel {
     return this.props.chapter;
   }
 
   updateChapter = (chapter: ChapterModel) => {
-    this.props.updateChapter(chapter, this.props.index);
+    this.props.updateChapter(chapter);
   };
 
   /**
@@ -40,7 +40,7 @@ class Chapter extends React.Component {
    */
   render() {
 
-    const coordinates = this.chapterInstance.location;
+    const coordinates = this.model.location;
 
     const tabList = [{
       key: 'basic',
@@ -51,20 +51,20 @@ class Chapter extends React.Component {
     }];
 
     const contentList = {
-      basic: <BasicInfo summary={this.chapterInstance.summary} onChange={event => {
-        this.updateChapter(this.chapterInstance.withSummary(event))
+      basic: <BasicInfo summary={this.model.summary} onChange={event => {
+        this.updateChapter(this.model.withSummary(event))
       }}/>,
       editor: <p>content2</p>
     };
 
     const actions = [<Icon key={1} type="save"/>];
     const map = (
-      <Map onClick={(lat, lng) => this.props.fetchAddressDetails(this.chapterInstance, lat, lng, this.props.index)}
-        coordinates={this.chapterInstance.location}/>
+      <Map onClick={(lat, lng) => this.props.fetchAddressDetails(this.model, lat, lng)}
+        coordinates={this.model.location}/>
     );
 
     const cover = (
-      <Cover onSelectionIntent={() => this.props.openPhotoBrowser(this.props.index, 'cover')}/>
+      <Cover onSelectionIntent={() => this.props.openPhotoBrowser('cover')}/>
     );
 
     const title = (
@@ -72,7 +72,7 @@ class Chapter extends React.Component {
         {coordinates.formatted || 'Add chapter!'}
         <RangePicker disabledDate={this.disabledDate} defaultValue={[moment(), moment()]}
           onChange={event => {
-            this.updateChapter(this.chapterInstance.withDates(event[0], event[1]));
+            this.updateChapter(this.model.withDates(event[0], event[1]));
           }}/>
       </div>
     );
@@ -85,7 +85,7 @@ class Chapter extends React.Component {
           actions={actions}
           title={title}
           tabList={tabList}
-          onTabChange={event => this.props.switchTabInChapter(event, this.props.index)}
+          onTabChange={event => this.props.switchTabInChapter(event)}
           defaultActiveTabKey='basic'
           activeTabKey={this.props.currentTab}
         >
@@ -100,7 +100,6 @@ class Chapter extends React.Component {
 
 Chapter.propTypes = {
   chapter: propTypes.instanceOf(ChapterModel),
-  index: propTypes.number,
   restrictedDates: propTypes.object,
   fetchAddressDetails: propTypes.func.isRequired,
   updateChapter: propTypes.func.isRequired,
@@ -108,6 +107,5 @@ Chapter.propTypes = {
   openPhotoBrowser: propTypes.func,
   currentTab: propTypes.string
 };
-
 
 export default Chapter;
