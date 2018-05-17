@@ -1,6 +1,7 @@
 import {Button} from 'antd';
 import React from 'react';
 import propTypes from 'prop-types';
+import Photo from '../../../../../models/Photo';
 import styles from './cover.css';
 export default class Cover extends React.Component {
 
@@ -15,6 +16,6 @@ export default class Cover extends React.Component {
 }
 
 Cover.propTypes = {
-  src: propTypes.string,
+  src: propTypes.instanceOf(Photo),
   onSelectionIntent: propTypes.func
 };

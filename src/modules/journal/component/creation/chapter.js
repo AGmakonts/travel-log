@@ -5,6 +5,7 @@ import React, {Fragment} from 'react';
 import ChapterModel from '../../../../models/Chapter';
 import styles from './chapter.css';
 import BasicInfo from './chapterParts/basicInfo';
+import ChapterEditor from './chapterParts/chapterEditor';
 import Cover from './chapterParts/cover';
 import Map from './chapterParts/map';
 
@@ -21,6 +22,8 @@ class Chapter extends React.Component {
     tab: 'Chapter editor'
   }];
 
+  editor = null;
+
   /**
    *
    * @return {ChapterModel|*}
@@ -32,6 +35,9 @@ class Chapter extends React.Component {
   updateChapter = (chapter: ChapterModel) => {
     this.props.updateChapter(chapter);
   };
+
+  componentDidMount() {
+  }
 
   /**
    *
@@ -51,7 +57,7 @@ class Chapter extends React.Component {
     const coordinates = this.model.location;
     const contentList = {
       basic: this.basicInfoComponent(),
-      editor: <p>content2</p>
+      editor: <ChapterEditor onChange={(change) => this.updateChapter(this.model.withContent(change))}/>
     };
 
     const actions = [<Icon key={1} type="save"/>];

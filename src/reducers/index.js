@@ -1,5 +1,6 @@
 import {routerReducer} from 'react-router-redux'
 import {combineReducers} from 'redux';
+import airportList from './helpers/airportList';
 import fieldValue from './settings/connectedAccounts/flickr/fieldValue';
 import user from './settings/connectedAccounts/flickr/user';
 import visible from './settings/visible';
@@ -9,12 +10,16 @@ import chapterTabs from './trips/new/chapterTabs';
 import albumList from './trips/new/flickr/albumList';
 import currentSetPhotos from './trips/new/flickr/currentSetPhotos';
 import photoBrowser from './trips/new/photoBrowser';
+import textEditor from './trips/new/textEditor';
 import selected from './trips/selected';
 import tripList from './trips/tripList';
 import currentUser from './user/currentUser';
 
 export default combineReducers({
   currentUser,
+  helpers: combineReducers({
+    airportList
+  }),
   settings: combineReducers({
     visible,
     accounts: combineReducers({
@@ -35,7 +40,8 @@ export default combineReducers({
       }),
       chapters,
       photoBrowser,
-      chapterTabs
+      chapterTabs,
+      textEditor
     })
   }),
   router: routerReducer
