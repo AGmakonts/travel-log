@@ -1,5 +1,6 @@
 import Flickr from 'flickr-sdk';
 import {FLICKR_API_KEY} from '../../../../../config/networkingConfig';
+import Photo from '../../../../../models/Photo';
 import receivePhotos from './receivePhotos';
 
 
@@ -15,13 +16,15 @@ export default function fetchPhotos(set_id: String, user_id: String) {
   };
 
   let _constructResponse = function (sizes) {
+
     return {
       thumbnail: sizes.find(element => {
         return element.label === 'Large Square'
       }).source,
       url: sizes[0].source,
       width: sizes[0].width,
-      height: sizes[0].height
+      height: sizes[0].height,
+      label: sizes[0].label
     }
   };
   const _constructPhotoObjects = (photos) => {
@@ -36,6 +39,9 @@ export default function fetchPhotos(set_id: String, user_id: String) {
         })
         .then(_sortSizes)
         .then(_constructResponse)
+        .then(data => {
+          return new Photo(data.url, data.thumbnail, data.width, data.height, photo.id, data.label);
+        })
     }))
   };
 

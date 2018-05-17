@@ -1,4 +1,5 @@
 import Location from './Location';
+import Photo from './Photo';
 
 export default class Chapter {
 
@@ -6,7 +7,7 @@ export default class Chapter {
   _endDate: Date;
   _location: Location;
   _summary: String;
-  _coverUrl: String;
+  _photo: Photo;
 
   /**
    *
@@ -14,20 +15,20 @@ export default class Chapter {
    * @param endDate
    * @param location
    * @param summary
-   * @param coverUrl
+   * @param photo
    */
   constructor(
     startDate: Date,
     endDate: Date,
     location: Location,
     summary: String,
-    coverUrl: String
+    photo: Photo
   ) {
     this._startDate = startDate || new Date();
     this._endDate = endDate || new Date();
     this._location = location || new Location();
     this._summary = summary || '';
-    this._coverUrl = coverUrl;
+    this._photo = photo;
   }
 
   /**
@@ -66,8 +67,8 @@ export default class Chapter {
    *
    * @return {String}
    */
-  get coverUrl(): String {
-    return this._coverUrl;
+  get photo(): Photo {
+    return this._photo;
   }
 
   /**
@@ -77,7 +78,7 @@ export default class Chapter {
    * @return {Chapter}
    */
   withDates(start: Date, end: Date): Chapter {
-    return new Chapter(start, end, this.location, this.summary, this.coverUrl);
+    return new Chapter(start, end, this.location, this.summary, this.photo);
   }
 
   /**
@@ -86,7 +87,7 @@ export default class Chapter {
    * @return {Chapter}
    */
   withLocation(location: Location): Chapter {
-    return new Chapter(this.startDate, this.endDate, location, this.summary, this.coverUrl);
+    return new Chapter(this.startDate, this.endDate, location, this.summary, this.photo);
   }
 
   /**
@@ -95,15 +96,15 @@ export default class Chapter {
    * @return {Chapter}
    */
   withSummary(summary: String): Chapter {
-    return new Chapter(this.startDate, this.endDate, this.location, summary, this.coverUrl);
+    return new Chapter(this.startDate, this.endDate, this.location, summary, this.photo);
   }
 
   /**
    *
-   * @param coverUrl
+   * @param photo
    * @return {Chapter}
    */
-  withCover(coverUrl: String) : Chapter {
-    return new Chapter(this.startDate, this.endDate, this.location, this.summary, coverUrl);
+  withPhoto(photo: Photo) : Chapter {
+    return new Chapter(this.startDate, this.endDate, this.location, this.summary, photo);
   }
 }

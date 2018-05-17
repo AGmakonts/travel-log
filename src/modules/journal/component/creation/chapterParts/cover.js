@@ -7,7 +7,7 @@ export default class Cover extends React.Component {
   render() {
     return (
       this.props.src ?
-        <img src={this.props.src}/> :
+        <img src={this.props.src.url}/> :
         <div onClick={this.props.onSelectionIntent} className={styles.placeholder}><Button size='large' type="dashed">Select Cover photo</Button></div>
     );
   }

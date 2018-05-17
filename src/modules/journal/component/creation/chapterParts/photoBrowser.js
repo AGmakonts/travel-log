@@ -36,13 +36,13 @@ class PhotoBrowser extends React.Component {
         styles.photo
       ];
 
-      if (photo.url === this.props.selectedPhoto) {
+      if (this.props.selectedPhoto && photo.url === this.props.selectedPhoto.url) {
         classes.push(styles.selected)
       }
 
       return (
         <div className={classes.join(' ')} key={photo.url}
-          onClick={() => this.props.selectPhotoForChapter(photo.url)}>
+          onClick={() => this.props.selectPhotoForChapter(photo)}>
           <img src={photo.thumbnail}/>
         </div>
       );
