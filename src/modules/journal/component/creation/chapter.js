@@ -13,6 +13,14 @@ const {RangePicker} = DatePicker;
 
 class Chapter extends React.Component {
 
+  tabList = [{
+    key: 'basic',
+    tab: 'Basic info'
+  }, {
+    key: 'editor',
+    tab: 'Chapter editor'
+  }];
+
   /**
    *
    * @return {ChapterModel|*}
@@ -41,50 +49,23 @@ class Chapter extends React.Component {
   render() {
 
     const coordinates = this.model.location;
-
-    const tabList = [{
-      key: 'basic',
-      tab: 'Basic info'
-    }, {
-      key: 'editor',
-      tab: 'Chapter editor'
-    }];
-
     const contentList = {
-      basic: <BasicInfo summary={this.model.summary} onChange={event => {
-        this.updateChapter(this.model.withSummary(event))
-      }}/>,
+      basic: this.basicInfoComponent(),
       editor: <p>content2</p>
     };
 
     const actions = [<Icon key={1} type="save"/>];
-    const map = (
-      <Map onClick={(lat, lng) => this.props.fetchAddressDetails(this.model, lat, lng)}
-        coordinates={this.model.location}/>
-    );
-
-    const cover = (
-      <Cover src={this.props.chapter.photo} onSelectionIntent={() => this.props.openPhotoBrowser('cover')}/>
-    );
-
-    const title = (
-      <div className={styles.title}>
-        {coordinates.formatted || 'Add chapter!'}
-        <RangePicker disabledDate={this.disabledDate} defaultValue={[moment(), moment()]}
-          onChange={event => {
-            this.updateChapter(this.model.withDates(event[0], event[1]));
-          }}/>
-      </div>
-    );
+    const map = this.mapComponent();
+    const cover = this.coverComponent();
+    const title = this.titleComponent(coordinates);
 
     return (
       <Fragment>
-
         <Card
           cover={this.props.currentTab === 'basic' ? map : cover}
           actions={actions}
           title={title}
-          tabList={tabList}
+          tabList={this.tabList}
           onTabChange={event => this.props.switchTabInChapter(event)}
           defaultActiveTabKey='basic'
           activeTabKey={this.props.currentTab}
@@ -95,6 +76,50 @@ class Chapter extends React.Component {
     );
   }
 
+  /**
+   *
+   * @param coordinates
+   * @return {*}
+   */
+  titleComponent(coordinates) {
+    return <div className={styles.title}>
+      {coordinates.formatted || 'Add chapter!'}
+      <RangePicker disabledDate={this.disabledDate} defaultValue={[moment(), moment()]}
+        onChange={event => {
+          this.updateChapter(this.model.withDates(event[0].toDate(), event[1].toDate()));
+        }}/>
+    </div>;
+  }
+
+  /**
+   *
+   * @return {*}
+   */
+  coverComponent() {
+    return <Cover src={this.props.chapter.photo} onSelectionIntent={() => this.props.openPhotoBrowser('cover')}/>;
+  }
+
+  /**
+   *
+   * @return {*}
+   */
+  mapComponent() {
+    return <Map onClick={(lat, lng) => this.props.fetchAddressDetails(this.model, lat, lng)}
+      coordinates={this.model.location}/>;
+  }
+
+  /**
+   *
+   * @return {*}
+   */
+  basicInfoComponent() {
+    return <BasicInfo
+      summary={this.model.summary}
+      onChange={event => {
+        this.updateChapter(this.model.withSummary(event))
+      }}
+    />;
+  }
 }
 
 

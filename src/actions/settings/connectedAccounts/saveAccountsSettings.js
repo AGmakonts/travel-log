@@ -16,7 +16,5 @@ export default function saveAccountsSettings(accountsSettings: Object, userId: S
           flickr: accountsSettings.accounts.flickr.user.id
         }
       });
-
   }
-
 }
