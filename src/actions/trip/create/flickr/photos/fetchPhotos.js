@@ -2,10 +2,44 @@ import Flickr from 'flickr-sdk';
 import {FLICKR_API_KEY} from '../../../../../config/networkingConfig';
 import receivePhotos from './receivePhotos';
 
+
 export default function fetchPhotos(set_id: String, user_id: String) {
 
+  const flickr = new Flickr(FLICKR_API_KEY);
+
+
+  const _sortSizes = (sizes) => {
+    return sizes.slice().sort((a, b) => {
+      return parseInt(a.width) < parseInt(b.width);
+    })
+  };
+
+  let _constructResponse = function (sizes) {
+    return {
+      thumbnail: sizes.find(element => {
+        return element.label === 'Large Square'
+      }).source,
+      url: sizes[0].source,
+      width: sizes[0].width,
+      height: sizes[0].height
+    }
+  };
+  const _constructPhotoObjects = (photos) => {
+    return Promise.all(photos.map(photo => {
+
+      return flickr.photos
+        .getSizes({
+          photo_id: photo.id
+        })
+        .then(response => {
+          return response.body.sizes.size;
+        })
+        .then(_sortSizes)
+        .then(_constructResponse)
+    }))
+  };
+
   return dispatch => {
-    const flickr = new Flickr(FLICKR_API_KEY);
 
     return flickr.photosets
       .getPhotos({
@@ -15,14 +49,7 @@ export default function fetchPhotos(set_id: String, user_id: String) {
       .then(response => {
         return response.body.photoset.photo;
       })
-      .then(photos => {
-        return photos.map(photo => {
-          return {
-            url: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_h.jpg`,
-            thumbnail: `https://farm${photo.farm}.staticflickr.com/${photo.server}/${photo.id}_${photo.secret}_q.jpg`
-          }
-        })
-      })
+      .then(_constructPhotoObjects)
       .then(photos => {
         dispatch(receivePhotos(photos))
       })

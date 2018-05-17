@@ -1,13 +1,14 @@
 import {Button} from 'antd';
 import React from 'react';
 import propTypes from 'prop-types';
+import styles from './cover.css';
 export default class Cover extends React.Component {
 
   render() {
     return (
       this.props.src ?
         <img src={this.props.src}/> :
-        <div><Button onClick={this.props.onSelectionIntent}>Select Cover photo</Button></div>
+        <div onClick={this.props.onSelectionIntent} className={styles.placeholder}><Button size='large' type="dashed">Select Cover photo</Button></div>
     );
   }
 

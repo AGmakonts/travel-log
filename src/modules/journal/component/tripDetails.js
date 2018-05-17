@@ -16,7 +16,7 @@ class TripDetails extends React.Component {
     return this.props.trip.chapters.map((chapter: Chapter, index: number) => {
       return (
         <Col span={8} key={index}>
-          <Card cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"/>}>
+          <Card cover={<img alt="example" src={chapter.coverUrl}/>}>
             <Meta
               title={chapter.location.country}
               description={chapter.summary}

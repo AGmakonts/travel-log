@@ -64,7 +64,7 @@ class Chapter extends React.Component {
     );
 
     const cover = (
-      <Cover onSelectionIntent={() => this.props.openPhotoBrowser('cover')}/>
+      <Cover src={this.props.chapter.coverUrl} onSelectionIntent={() => this.props.openPhotoBrowser('cover')}/>
     );
 
     const title = (

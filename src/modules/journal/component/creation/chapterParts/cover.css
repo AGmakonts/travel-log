@@ -1,0 +1,8 @@
+.placeholder {
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f6f6f5;
+    cursor: pointer;
+}

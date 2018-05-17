@@ -88,6 +88,10 @@ class Creator extends React.Component {
         {this.props.newTrip.photoBrowser.visible &&
         <PhotoBrowser
           onCancel={this.props.dismissPhotoBrowser}
+          onOk={(url, target, index) => {
+            this.props.dismissPhotoBrowser();
+            this.props.updateChapter(this.props.newTrip.chapters[index].withCover(url), index);
+          }}
           flickrUser={this.props.flickrUser}
           chapter={this.props.newTrip.photoBrowser.forChapter}
           target={this.props.newTrip.photoBrowser.targetSection}

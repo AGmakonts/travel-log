@@ -11,8 +11,11 @@
     padding: 2px;
 }
 
+.selected {
+    border: #000000 2px solid;
+}
+
 .container {
     display: flex;
     flex-wrap: wrap;
-
 }

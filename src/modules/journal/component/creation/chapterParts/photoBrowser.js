@@ -1,4 +1,4 @@
-import {Card, Modal} from 'antd';
+import {Button, Card, Modal} from 'antd';
 import propTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
@@ -32,9 +32,17 @@ class PhotoBrowser extends React.Component {
   renderPhotos() {
     return this.props.photos.map(photo => {
 
+      const classes = [
+        styles.photo
+      ];
+
+      if (photo.url === this.props.selectedPhoto) {
+        classes.push(styles.selected)
+      }
+
       return (
-        <div className={styles.photo} key={photo.url}
-          onClick={() => this.props.selectPhotoForChapter(this.props.chapter, this.props.target, photo.url)}>
+        <div className={classes.join(' ')} key={photo.url}
+          onClick={() => this.props.selectPhotoForChapter(photo.url)}>
           <img src={photo.thumbnail}/>
         </div>
       );
@@ -49,7 +57,17 @@ class PhotoBrowser extends React.Component {
         bodyStyle={{height: '500px', overflow: 'scroll'}}
         title={`Select photo for chapter ${this.props.chapter}`}
         visible
-        onCancel={this.props.onCancel}
+        footer={[
+          <Button key="back" onClick={this.props.onCancel}>Close</Button>,
+          <Button
+            key="submit"
+            type="primary"
+            disabled={!this.props.selectedPhoto}
+            onClick={() => this.props.onOk(this.props.selectedPhoto, this.props.chapter, this.props.target)}
+          >
+            Select
+          </Button>
+        ]}
       >
         <div className={styles.container}>
           {!this.props.selectedSet ? this.renderCards() : this.renderPhotos()}
@@ -74,8 +92,10 @@ PhotoBrowser.propTypes = {
   selectAlbum: propTypes.func.isRequired,
   flickrUser: propTypes.string.isRequired,
   onCancel: propTypes.func,
+  onOk: propTypes.func,
   chapter: propTypes.number,
   selectedSet: propTypes.number,
+  selectedPhoto: propTypes.string,
   target: propTypes.any,
   selectPhotoForChapter: propTypes.func
 };
@@ -84,7 +104,8 @@ function mapStateToProps(state) {
   return {
     albumList: state.trips.newTrip.flickr.albumList,
     selectedSet: state.trips.newTrip.photoBrowser.selectedSet,
-    photos: state.trips.newTrip.flickr.currentSetPhotos,
+    selectedPhoto: state.trips.newTrip.photoBrowser.selectedPhoto,
+    photos: state.trips.newTrip.flickr.currentSetPhotos
   }
 }
 
