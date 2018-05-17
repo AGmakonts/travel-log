@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Chapter from '../../../models/Chapter';
 import Trip from '../../../models/Trip';
+import styles from './tripDetails.css';
 
 const TabPane = Tabs.TabPane;
 const {Meta} = Card;
@@ -16,7 +17,7 @@ class TripDetails extends React.Component {
     return this.props.trip.chapters.map((chapter: Chapter, index: number) => {
       return (
         <Col span={8} key={index}>
-          <Card cover={<img alt="example" src={chapter.photo.thumbnail}/>}>
+          <Card cover={<img className={styles.cover} alt="example" src={chapter.photo.thumbnail}/>}>
             <Meta
               title={chapter.location.country}
               description={chapter.summary}

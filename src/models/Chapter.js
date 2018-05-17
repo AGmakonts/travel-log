@@ -28,7 +28,7 @@ export default class Chapter {
     this._endDate = endDate || new Date();
     this._location = location || new Location();
     this._summary = summary || '';
-    this._photo = photo;
+    this._photo = photo || new Photo();
   }
 
   /**
