@@ -1,4 +1,4 @@
-import {CHAPTER_CREATION_STARTED, TAB_CHANGED} from '../../../actions/trip/create/actionTypes';
+import {CHAPTER_CREATION_STARTED, TAB_CHANGED, TRIP_CREATION_CANCELED} from '../../../actions/trip/create/actionTypes';
 
 export default function chapterTabs(state = [], action) {
 
@@ -8,6 +8,10 @@ export default function chapterTabs(state = [], action) {
       const newState = [...state];
       newState.splice(payload.index, 1, payload.to);
       return newState;
+    }
+
+    case TRIP_CREATION_CANCELED: {
+      return [];
     }
 
     case CHAPTER_CREATION_STARTED: {

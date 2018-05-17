@@ -1,4 +1,4 @@
-import {CHAPTER_CREATION_STARTED} from '../../../actions/trip/create/actionTypes';
+import {CHAPTER_CREATION_STARTED, TRIP_CREATION_CANCELED} from '../../../actions/trip/create/actionTypes';
 import {UPDATE_CHAPTER} from '../../../actions/trip/create/updateChapter';
 import Chapter from '../../../models/Chapter';
 
@@ -10,6 +10,10 @@ export default function chapters(state = [], action) {
     case UPDATE_CHAPTER: {
       newState.splice(action.atIndex, 1, action.chapter);
       return newState;
+    }
+
+    case TRIP_CREATION_CANCELED: {
+      return []
     }
 
     case CHAPTER_CREATION_STARTED: {

@@ -48,7 +48,7 @@ class PhotoBrowser extends React.Component {
         width={'80%'}
         bodyStyle={{height: '500px', overflow: 'scroll'}}
         title={`Select photo for chapter ${this.props.chapter}`}
-        visible={this.props.visible}
+        visible
         onCancel={this.props.onCancel}
       >
         <div className={styles.container}>
@@ -73,7 +73,6 @@ PhotoBrowser.propTypes = {
   fetchAlbums: propTypes.func.isRequired,
   selectAlbum: propTypes.func.isRequired,
   flickrUser: propTypes.string.isRequired,
-  visible: propTypes.bool,
   onCancel: propTypes.func,
   chapter: propTypes.number,
   selectedSet: propTypes.number,
@@ -84,13 +83,8 @@ PhotoBrowser.propTypes = {
 function mapStateToProps(state) {
   return {
     albumList: state.trips.newTrip.flickr.albumList,
-    flickrUser: state.settings.accounts.flickr.user ? state.settings.accounts.flickr.user.id : null,
-    chapter: state.trips.newTrip.photoBrowser.forChapter,
-    visible: state.trips.newTrip.photoBrowser.visible,
     selectedSet: state.trips.newTrip.photoBrowser.selectedSet,
     photos: state.trips.newTrip.flickr.currentSetPhotos,
-    target: state.trips.newTrip.photoBrowser.targetSection
-
   }
 }
 

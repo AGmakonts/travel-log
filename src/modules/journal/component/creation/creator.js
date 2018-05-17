@@ -85,8 +85,14 @@ class Creator extends React.Component {
 
     return (
       <div>
+        {this.props.newTrip.photoBrowser.visible &&
+        <PhotoBrowser
+          onCancel={this.props.dismissPhotoBrowser}
+          flickrUser={this.props.flickrUser}
+          chapter={this.props.newTrip.photoBrowser.forChapter}
+          target={this.props.newTrip.photoBrowser.targetSection}
+        />}
 
-        {this.props.newTrip.photoBrowser.visible && <PhotoBrowser onCancel={this.props.dismissPhotoBrowser}/>}
         <h2 className={styles.toolbar}>
           Create new trip!
           <div>
@@ -123,12 +129,14 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
-    newTrip: state.trips.newTrip
+    newTrip: state.trips.newTrip,
+    flickrUser: state.settings.accounts.flickr.user ? state.settings.accounts.flickr.user.id : null,
   }
 }
 
 Creator.propTypes = {
   newTrip: propTypes.object,
+  flickrUser: propTypes.string,
   cancel: propTypes.func.isRequired,
   save: propTypes.func.isRequired,
   openPhotoBrowser: propTypes.func.isRequired,
