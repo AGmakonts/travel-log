@@ -1,4 +1,4 @@
-import {Avatar, Dropdown, Icon, Layout, Menu, Modal} from 'antd';
+import {Avatar, Dropdown, Icon, Layout, Menu} from 'antd';
 import propTypes from 'prop-types';
 import React from 'react';
 import {connect} from 'react-redux';
@@ -41,13 +41,8 @@ class Journal extends React.Component {
 
     return (
       <Layout>
-        <Modal
-          title="Your Travel Log settings"
-          visible={this.props.settingsVisible}
-          onCancel={this.props.toggleSettings}
-        >
-          <Settings/>
-        </Modal>
+
+        <Settings onCancel={this.props.toggleSettings} currentUser={this.props.currentUser}/>
         <Header className="header">
           <div className="logo"/>
           <Menu
@@ -108,8 +103,7 @@ function mapStateToProps(state) {
   return {
     tripList: state.trips.tripList,
     selected: state.trips.selected,
-    currentUser: state.currentUser,
-    settingsVisible: !!state.settings.visible
+    currentUser: state.currentUser
   }
 }
 
@@ -119,7 +113,6 @@ Journal.propTypes = {
   tripList: propTypes.array.isRequired,
   addTrip: propTypes.func.isRequired,
   currentUser: propTypes.object.isRequired,
-  settingsVisible: propTypes.bool.isRequired,
   toggleSettings: propTypes.func.isRequired
 };
 
