@@ -1,6 +1,6 @@
 /* eslint react/prop-types: 0 */
 import {Popover} from 'antd';
-import {convertToRaw} from 'draft-js';
+import {convertToRaw, convertFromRaw} from 'draft-js';
 import {
   BlockquoteButton,
   BoldButton,
@@ -55,7 +55,15 @@ class ChapterEditor extends React.Component {
   }
 
   componentWillMount() {
-    this.props.createTextEditorInstance(this._instanceKey);
+    const snapshot = this.props.snapshot ? convertFromRaw(this.props.snapshot) : null;
+
+    this.props.createTextEditorInstance(this._instanceKey, snapshot);
+
+    setInterval(() => {
+      this.editorState.getCurrentContent &&
+      this.props.onChange(convertToRaw(this.editorState.getCurrentContent()));
+    }, 10000);
+
   }
 
   customDecorators = [
@@ -92,7 +100,6 @@ class ChapterEditor extends React.Component {
             <Editor decorators={this.customDecorators} editorState={this.editorState}
               onChange={(state) => {
                 this.props.updateTextEditorContent(state, this._instanceKey);
-                console.log(convertToRaw(state.getCurrentContent()))
               }}
               plugins={[sideToolbarPlugin, linkifyPlugin]}>
               <button onClick={console.log}>Bold</button>
@@ -109,7 +116,8 @@ ChapterEditor.propTypes = {
   editorState: propTypes.object,
   onChange: propTypes.func,
   createTextEditorInstance: propTypes.func,
-  updateTextEditorContent: propTypes.func
+  updateTextEditorContent: propTypes.func,
+  snapshot: propTypes.object
 };
 
 function mapStateToProps(state) {

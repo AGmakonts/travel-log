@@ -152,6 +152,18 @@ module.exports = {
             }
           },
           {
+            test: /App\.css$/,
+            use: [
+              require.resolve('style-loader'),
+              {
+                loader: require.resolve('css-loader'),
+                options: {
+                  importLoaders: 1
+                }
+              }
+            ]
+          },
+          {
             test: /plugin\.css$/,
             use: [
               require.resolve('style-loader'),

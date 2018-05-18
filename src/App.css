@@ -1,1 +1,16 @@
 @import "../node_modules/draft-js-side-toolbar-plugin/lib/plugin.css";
+html,
+body,
+body > #root,
+body > #root > .ant-layout,
+body > #root > .ant-layout > .ant-layout {
+    height: 100%;
+    min-height: 100%;
+    overflow: hidden;
+}
+
+body > #root > .ant-layout > .ant-layout > .ant-layout > .ant-layout-content {
+    overflow: auto;
+}
+
+

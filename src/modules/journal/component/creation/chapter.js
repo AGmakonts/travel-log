@@ -57,7 +57,7 @@ class Chapter extends React.Component {
     const coordinates = this.model.location;
     const contentList = {
       basic: this.basicInfoComponent(),
-      editor: <ChapterEditor onChange={(change) => this.updateChapter(this.model.withContent(change))}/>
+      editor: <ChapterEditor snapshot={this.model.content} onChange={(change) => this.updateChapter(this.model.withContent(change))}/>
     };
 
     const actions = [<Icon key={1} type="save"/>];

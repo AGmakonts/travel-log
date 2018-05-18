@@ -65,10 +65,10 @@ class Journal extends React.Component {
           </Menu>
         </Header>
         <Layout>
-          <Sider width={400} style={{background: '#fff'}}>
+          <Sider width={400}>
             {tripList}
           </Sider>
-          <Layout style={{padding: '0 24px 24px'}}>
+          <Layout>
             <Content style={{background: '#fff', padding: 24, margin: 0, minHeight: 280}}>
               <Route path='/journal/newTrip' component={Creator}/>
               <Route path='/journal/trip/:id/:name' render={this._getConfiguredTripDetailsComponent}/>

@@ -8,7 +8,7 @@ export default function textEditor(state = {}, action) {
   switch (action.type) {
 
     case CREATE_TEXT_EDITOR_INSTANCE: {
-      newState[action.instance] = EditorState.createEmpty();
+      newState[action.instance] = action.rawContent ? EditorState.createWithContent(action.rawContent) : EditorState.createEmpty();
       return newState;
     }
 

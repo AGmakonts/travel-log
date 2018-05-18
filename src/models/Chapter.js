@@ -33,7 +33,7 @@ export default class Chapter {
     this._location = location || new Location();
     this._summary = summary || '';
     this._photo = photo || new Photo();
-    this._content = content || EditorState.createEmpty();
+    this._content = content;
   }
 
   /**
